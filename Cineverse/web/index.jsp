@@ -37,15 +37,25 @@
 
         <div class="banner">
             <div class="carousel" id="carousel">
-                <img src="image1.jpg" alt="" class="active">
-                <img src="image2.jpg" alt="">
-                <img src="image3.jpg" alt="">
+                <div class="slide-container active">
+                    <img src="images/movie1.jpg" alt="" class="background-image">
+                    <img src="images/movie1.jpg" alt="" class="main-image">
+                </div>
+                <div class="slide-container">
+                    <img src="images/movie2.jpg" alt="" class="background-image">
+                    <img src="images/movie2.jpg" alt="" class="main-image">
+                </div>
+                <div class="slide-container">
+                    <img src="images/movie1.jpg" alt="" class="background-image">
+                    <img src="images/movie1.jpg" alt="" class="main-image">
+                </div>
             </div>
             <div class="carousel-controls">
                 <button onclick="prevSlide()">❮</button>
                 <button onclick="nextSlide()">❯</button>
             </div>
         </div>
+
 
         <section class="now-showing">
             <h2 class="section-title">Now Showing</h2>
@@ -73,9 +83,9 @@
                         <h3>Upcoming Movie</h3>
                         <p></p>
                         <div class="button-group">
-                        <button class="book-btn">Notify Me</button>
-                        <button class="trailer-btn" onclick="playTrailer('https://www.youtube.com/embed/your-video-id')">Watch Trailer</button>
-                    </div>
+                            <button class="book-btn">Notify Me</button>
+                            <button class="trailer-btn" onclick="playTrailer('https://www.youtube.com/embed/your-video-id')">Watch Trailer</button>
+                        </div>
                     </div>
                 </div>
                 <!-- Add more movie cards -->
@@ -85,7 +95,7 @@
         <footer>
             &copy; 2025 <a href="#">Cineverse</a>. All Rights Reserved.
         </footer>
-  <div class="trailer-modal" id="trailerModal">
+        <div class="trailer-modal" id="trailerModal">
             <div class="modal-content">
                 <button class="close-modal" onclick="closeTrailer()">✕</button>
                 <div class="video-container">
@@ -93,82 +103,55 @@
                 </div>
             </div>
         </div>
-      <script>
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.carousel img');
-
-    function showSlide(index) {
-       
-        slides.forEach(function(slide) {
+        <script>
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel .slide-container');
+            function showSlide(index) {
+            // Remove active class from all slides
+            slides.forEach(function(slide) {
             slide.classList.remove('active');
-        });
-        
-        
-        const totalSlides = slides.length;
-        currentSlide = (index + totalSlides) % totalSlides;
-        
-        
-        slides[currentSlide].classList.add('active');
-    }
+            });
+            const totalSlides = slides.length;
+            currentSlide = (index + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            }
 
-    function nextSlide() {
-        showSlide(currentSlide + 1);
-    }
+            function nextSlide() {
+            showSlide(currentSlide + 1);
+            }
 
-    function prevSlide() {
-        showSlide(currentSlide - 1);
-    }
-    setInterval(nextSlide, 5000);
+            function prevSlide() {
+            showSlide(currentSlide - 1);
+            }
 
- 
-    function toggleDropdown(event) {
-        event.stopPropagation();
-        const dropdown = document.getElementById('dropdownContent');
-        dropdown.classList.toggle('show');
-    }
+            setInterval(nextSlide, 5000);
+            showSlide(0);
+            function playTrailer(trailerUrl) {
+            const modal = document.getElementById('trailerModal');
+            const videoFrame = document.getElementById('trailerVideo');
+            videoFrame.src = trailerUrl;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            }
 
-   
-    document.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('dropdownContent');
-        const menuIcon = document.querySelector('.menu-icon');
-        
-        if (!menuIcon.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.classList.remove('show');
-        }
-    });
+            function closeTrailer() {
+            const modal = document.getElementById('trailerModal');
+            const videoFrame = document.getElementById('trailerVideo');
+            videoFrame.src = '';
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            }
 
-  
-    function playTrailer(trailerUrl) {
-        const modal = document.getElementById('trailerModal');
-        const videoFrame = document.getElementById('trailerVideo');
-        
-        videoFrame.src = trailerUrl;
-        modal.style.display = 'flex';
-        
-        document.body.style.overflow = 'hidden';
-    }
 
-    function closeTrailer() {
-        const modal = document.getElementById('trailerModal');
-        const videoFrame = document.getElementById('trailerVideo');
-        
-        videoFrame.src = '';
-        modal.style.display = 'none';
-        
-        document.body.style.overflow = 'auto';
-    }
-
-  
-    document.getElementById('trailerModal').addEventListener('click', function(e) {
-        if (e.target === this) {
+            document.getElementById('trailerModal').addEventListener('click', function(e) {
+            if (e.target === this) {
             closeTrailer();
-        }
-    });
+            }
+            });
+            showSlide(0);
+        </script>
 
-    showSlide(0);
-</script>
 
-      
     </body>
 </html>
 
