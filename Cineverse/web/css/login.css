@@ -1,0 +1,250 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom, #10141e, #2d3241);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/Cineverse/images/background.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(2px) brightness(0.9);
+    z-index: -1;
+}
+
+.container {
+    background: #1c2231;
+    border-radius: 10px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 500px;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+    padding-top: 10px;
+}
+
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+form {
+    background: #1c2231;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: #facc15;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.social-container {
+    margin: 10px 0;
+}
+
+.social-container a {
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+    color: #facc15;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.social-container a:hover {
+    background: #facc15;
+    color: #1c2231;
+}
+
+span {
+    font-size: 14px;
+    color: #d1d5db;
+    margin: 15px 0;
+}
+
+.infield {
+    position: relative;
+    margin: 10px 0;
+    width: 100%;
+}
+
+input {
+    background-color: #2d3241;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    transition: 0.3s;
+}
+
+input:focus {
+    border: 1px solid #facc15;
+}
+
+button {
+    background-color: #facc15;
+    color: #1c2231;
+    border: none;
+    padding: 12px 45px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #e3b912;
+}
+
+.forgot {
+    color: #d1d5db;
+    text-decoration: none;
+    margin: 15px 0;
+    transition: 0.3s;
+}
+
+.forgot:hover {
+    color: #facc15;
+}
+.logo-container {
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.form-logo {
+    max-width: 150px; /* Adjust size as needed */
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 50%;
+}
+
+/* If you want to use text logo instead of image */
+.logo-container .text-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #facc15;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.overlay {
+    background: rgba(250, 204, 21, 0.1);
+    color: #ffffff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+}
+
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
