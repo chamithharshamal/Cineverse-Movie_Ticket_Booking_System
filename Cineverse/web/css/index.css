@@ -32,6 +32,9 @@ header .right-section {
     gap: 20px; 
 }
 
+header .right-section a{
+    text-decoration: none;
+}
 /* Update search input styles if needed */
 header input {
     width: 300px; 

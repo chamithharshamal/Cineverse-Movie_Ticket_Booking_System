@@ -20,8 +20,7 @@
             <div class="logo">Cineverse</div>
             <input type="text" placeholder="Search for movies...">
             <div class="right-section">
-                <button class="login-btn">Login</button>
-                <button class="login-btn">Sign Up</button>
+                <a href="login.jsp" class="login-btn">Login</a>
                 <div class="dropdown">
                     <div class="menu-icon" onclick="toggleDropdown(event)">☰</div>
                     <div class="dropdown-content" id="dropdownContent">

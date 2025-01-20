@@ -83,22 +83,24 @@
             </div>
         </div>
 
-        <script>
-            const container = document.getElementById('container');
-            const overlayCon = document.getElementById('overlayCon');
-            const overlayBtn = document.getElementById('overlayBtn');
-            overlayBtn.addEventListener('click', () = > {
-            container.classList.toggle('right-panel-active');
-            });
-            document.querySelector('.overlay-left button').addEventListener('click', () = > {
-            container.classList.remove('right-panel-active');
-            });
-            document.querySelector('.overlay-right button').addEventListener('click', () = > {
-            container.classList.add('right-panel-active');
-            });
+       <script>
+    const container = document.getElementById('container');
+    const overlayCon = document.getElementById('overlayCon');
+    const overlayBtn = document.getElementById('overlayBtn');
 
+    overlayBtn.addEventListener('click', () => {
+        container.classList.toggle('right-panel-active');
+    });
 
-        </script>
+    document.querySelector('.overlay-left button').addEventListener('click', () => {
+        container.classList.remove('right-panel-active');
+    });
+
+    document.querySelector('.overlay-right button').addEventListener('click', () => {
+        container.classList.add('right-panel-active');
+    });
+</script>
+
 
     </body>
 </html>
