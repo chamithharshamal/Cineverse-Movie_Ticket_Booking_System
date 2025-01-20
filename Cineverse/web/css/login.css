@@ -248,3 +248,33 @@ button:hover {
     transform: translateX(20%);
 }
 
+/* Add this to your CSS */
+.my-swal {
+    z-index: 10000;
+}
+
+.swal2-popup {
+    border-radius: 15px;
+}
+
+.swal2-title {
+    color: #1c2231;
+}
+
+.swal2-confirm {
+    background-color: #facc15 !important;
+    color: #1c2231 !important;
+}
+.remember-me {
+    display: flex;
+    
+}
+
+.remember-me input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.remember-me label {
+    font-size: 12px;
+    color: #666;
+}

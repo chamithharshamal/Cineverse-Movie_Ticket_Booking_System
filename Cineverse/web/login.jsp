@@ -13,7 +13,7 @@
 
         <div class="container" id="container">
             <div class="form-container sign-up-container">
-                <form action="#">
+               <form action="register" method="post">
                     <h1>Create Account</h1>
                     <div class="social-container">
                         <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -21,44 +21,49 @@
                         <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <div class="infield">
-                        <input type="text" placeholder="Name" />
+                        <input type="text" placeholder="Name" name="name"/>
                         <label></label>
                     </div>
                     <div class="infield">
                         <input type="email" placeholder="Email" name="email"/>
                         <label></label>
                     </div>
-                    <div class="infield">
-                        <input type="password" placeholder="Password" />
+                     <div class="infield">
+                         <input type="text" placeholder="Phone Number" name="phoneNumber" />
                         <label></label>
                     </div>
                     <div class="infield">
-                        <input type="text" placeholder="Phone Number" />
+                        <input type="password" placeholder="Password" name="password"/>
                         <label></label>
                     </div>
+                    <input type="hidden" name="role" value="user" />
                     <button>Sign Up</button>
                 </form>
             </div>
             <div class="form-container sign-in-container">
-                <form action="#">
-                    <h1>Log in</h1>
-                    <div class="social-container">
-                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                    <span>or use your account</span>
-                    <div class="infield">
-                        <input type="email" placeholder="Email" name="email"/>
-                        <label></label>
-                    </div>
-                    <div class="infield">
-                        <input type="password" placeholder="Password" />
-                        <label></label>
-                    </div>
-                    <a href="#" class="forgot">Forgot your password?</a>
-                    <button>Log In</button>
-                </form>
+             <form id="loginForm" action="login" method="post">
+    <h1>Log in</h1>
+    <div class="social-container">
+        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+    <span>or use your account</span>
+    <div class="infield">
+        <input type="email" placeholder="Email" name="email" required/>
+        <label></label>
+    </div>
+    <div class="infield">
+        <input type="password" placeholder="Password" name="password" required/>
+        <label></label>
+    </div>
+    <div class="remember-me">
+        <input type="checkbox" id="rememberMe" name="rememberMe">
+        <label for="rememberMe">Remember Me</label>
+    </div>
+    <button type="submit">Log In</button>
+</form>
+
             </div>
             <div class="overlay-container" id="overlayCon">
                 <div class="overlay">
@@ -76,7 +81,7 @@
                         </div>
                         <h1>New Here?</h1>
                         <p>Join us and experience the best movie booking experience!</p>
-                        <button>Sign Up</button>
+                        <button type="submit">Sign Up</button>
                     </div>
                 </div>
                 <button id="overlayBtn"></button>
@@ -100,7 +105,21 @@
         container.classList.add('right-panel-active');
     });
 </script>
-
+<script>
+    // Check URL parameters for messages
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const msg = urlParams.get('msg');
+        
+        if(msg === 'success') {
+            alert("Registration successful! Please login.");
+        } else if(msg === 'exists') {
+            alert("Email already exists! Please use a different email.");
+        } else if(msg === 'error') {
+            alert("Registration failed. Please try again.");
+        }
+    }
+</script>
 
     </body>
 </html>
