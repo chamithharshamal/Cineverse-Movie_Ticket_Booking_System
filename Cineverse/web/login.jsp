@@ -106,7 +106,7 @@
     });
 </script>
 <script>
-    // Check URL parameters for messages
+    
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const msg = urlParams.get('msg');
