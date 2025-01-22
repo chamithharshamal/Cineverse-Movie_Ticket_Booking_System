@@ -4,10 +4,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String message = (String) session.getAttribute("message");
-    String messageType = (String) session.getAttribute("messageType");
-    session.removeAttribute("message");
-    session.removeAttribute("messageType");
+    if (message != null) {
+        session.removeAttribute("message"); 
+    }
 %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,6 +18,8 @@
         <link href="../css/sidePanel.css" rel="stylesheet">
     </head>
     <body>
+          <div id="message" class="message"></div>
+        
         <div class="container">
             <div class="left">
                 <jsp:include page="sidePanel.jsp" />
@@ -25,7 +28,6 @@
             <div class="right">
                 <header>
                     <h1>Movie Management</h1>
-                    <a href="#add-movie-form" class="add-btn">Add New Movie</a>
                 </header>
 
                 <!-- Add Movie Form Section -->
@@ -117,65 +119,47 @@
         <footer>
             <p>&copy; 2025 Cineverse. All Rights Reserved.</p>
         </footer>
+<script>
+    function showMessage(text) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = text;
+        messageDiv.style.display = 'block';
+        
+     
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 4000);
+    }
 
-        <script>
-            window.onload = function() {
-                const message = "${message}";
-                const messageType = "${messageType}";
-                
-                if (message) {
-                    alert(message);
-                }
-            };
-            
-       
-            function deleteMovie(movieId) {
-                if (confirm('Are you sure you want to delete this movie?')) {
-                    window.location.href = 'deleteMovie?id=' + movieId;
-                }
-            }
-            
-            document.querySelector('.movie-form').onsubmit = function(e) {
-                const adultPrice = document.getElementById('adult-ticket-price').value;
-                const childPrice = document.getElementById('child-ticket-price').value;
-                
-                if (parseFloat(childPrice) > parseFloat(adultPrice)) {
-                    alert('Child ticket price cannot be higher than adult ticket price');
-                    e.preventDefault();
-                    return false;
-                }
-                return true;
-            };
-            
-             function preventDoubleSubmission(form) {
+   
+    function preventDoubleSubmission(form) {
         if (form.submitted) {
-            alert('Form already submitted. Please wait...');
+            showMessage('Form already submitted. Please wait...');
             return false;
         }
-        
         form.submitted = true;
         form.querySelector('.submit-btn').disabled = true;
         return true;
     }
 
-    window.onload = function() {
-        const message = "<%= message %>";
-        if (message && message !== "null") {
-            alert(message);
+    document.querySelector('.movie-form').onsubmit = function(e) {
+        const adultPrice = document.getElementById('adult-ticket-price').value;
+        const childPrice = document.getElementById('child-ticket-price').value;
+        
+        if (parseFloat(childPrice) > parseFloat(adultPrice)) {
+            showMessage('Child ticket price cannot be higher than adult ticket price');
+            e.preventDefault();
+            return false;
         }
+        return true;
     };
-    
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
-        </script>
-        <script>
-    window.onload = function() {
-        const message = "<%= message %>";
-        if (message && message !== "null") {
-            alert(message);
-        }
-    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        <% if (message != null && !message.isEmpty()) { %>
+            showMessage('<%= message %>');
+        <% } %>
+    });
 </script>
+
     </body>
 </html>
