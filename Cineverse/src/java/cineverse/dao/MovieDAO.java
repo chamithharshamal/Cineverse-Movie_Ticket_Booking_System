@@ -41,32 +41,39 @@ public boolean addMovie(Movie movie) {
 
 
     // Get all movies
-   public List<Movie> getAllMovies() {
+public List<Movie> getAllMovies() {
     List<Movie> movies = new ArrayList<>();
     String query = "SELECT * FROM movies ORDER BY created_at DESC";
     
-    try (Statement st = connection.createStatement();
-         ResultSet rs = st.executeQuery(query)) {
+    try (Statement st = connection.createStatement()) {
+        System.out.println("Executing query: " + query);
+        ResultSet rs = st.executeQuery(query);
         
+        int count = 0;
         while (rs.next()) {
+            count++;
             Movie movie = new Movie();
             movie.setMovieId(rs.getInt("movie_id"));
             movie.setMovieName(rs.getString("movie_name"));
             movie.setLanguage(rs.getString("language"));
             movie.setContent(rs.getString("content"));
             movie.setTrailerLink(rs.getString("trailer_link"));
-            movie.setImagePath(rs.getString("image_path"));  // Match column name
+            movie.setImagePath(rs.getString("image_path"));
             movie.setRating(rs.getString("rating"));
             movie.setStatus(rs.getString("status"));
             movie.setAdultTicketPrice(rs.getDouble("adult_ticket_price"));
             movie.setChildTicketPrice(rs.getDouble("child_ticket_price"));
             movies.add(movie);
         }
+        System.out.println("Found " + count + " movies");
+        
     } catch (SQLException e) {
+        System.out.println("Error in getAllMovies: " + e.getMessage());
         e.printStackTrace();
     }
     return movies;
 }
+
 
 
     // Get movie by ID
@@ -162,7 +169,7 @@ public boolean addMovie(Movie movie) {
                 movie.setLanguage(rs.getString("language"));
                 movie.setContent(rs.getString("content"));
                 movie.setTrailerLink(rs.getString("trailer_link"));
-               movie.setImagePath(rs.getString("image_path"));
+                movie.setImagePath(rs.getString("image_path"));
                 movie.setRating(rs.getString("rating"));
                 movie.setStatus(rs.getString("status"));
                 movie.setAdultTicketPrice(rs.getDouble("adult_ticket_price"));
