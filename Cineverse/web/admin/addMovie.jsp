@@ -113,6 +113,60 @@
                         </div>
                     </form>
                 </div>
+    <div class="movie-table-container">
+    <h2>Current Movies</h2>
+    <table class="movie-table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Movie ID</th>
+                <th>Name</th>
+                <th>Language</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Adult Price</th>
+                <th>Child Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+                MovieDAO movieDAO = new MovieDAO();
+                List<Movie> allMovies = movieDAO.getAllMovies();
+                if (allMovies != null && !allMovies.isEmpty()) {
+                    for (Movie movie : allMovies) {
+            %>
+            <tr>
+                <td>
+                    <img src="<%=movie.getImagePath()%>" 
+                         alt="<%= movie.getMovieName()%>" 
+                         class="movie-thumbnail">
+                </td>
+                <td><%= movie.getMovieId()%></td>
+                <td><%= movie.getMovieName()%></td>
+                <td><%= movie.getLanguage()%></td>
+                <td><%= movie.getRating()%></td>
+                <td><%= movie.getStatus()%></td>
+                <td>Rs.<%= movie.getAdultTicketPrice()%></td>
+                <td>Rs.<%= movie.getChildTicketPrice()%></td>
+                <td>
+                    <button onclick="editMovie(<%= movie.getMovieId()%>)" class="edit-btn">Edit</button>
+                    <button onclick="deleteMovie(<%= movie.getMovieId()%>)" class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <%
+                }
+            } else {
+            %>
+            <tr>
+                <td colspan="9" class="no-movies">No movies available at the moment.</td>
+            </tr>
+            <%
+                }
+            %>
+        </tbody>
+    </table>
+</div>
             </div>
         </div>
 

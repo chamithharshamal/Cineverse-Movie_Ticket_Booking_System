@@ -377,3 +377,56 @@ footer a,footer a:checked {
     .message.hiding {
         animation: fadeOut 0.5s ease-in;
     }
+    
+    .movie-table-container {
+        padding: 10px;
+        overflow-x: auto;
+    }
+
+    .movie-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: black;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .movie-table th,
+    .movie-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        
+    }
+
+    .movie-table th {
+     background: black;
+        font-weight: bold;
+    }
+
+    .movie-thumbnail {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        padding: 6px 12px;
+        margin: 0 4px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .edit-btn {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .delete-btn {
+        background: #f44336;
+        color: white;
+    }
