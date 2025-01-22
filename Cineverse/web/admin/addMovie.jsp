@@ -162,7 +162,7 @@
                             %>
                             <tr>
                                 <td>
-                                    <img src="<%=movie.getImagePath()%>" 
+                                    <img src="../<%=movie.getImagePath()%>" 
                                          alt="<%= movie.getMovieName()%>" 
                                          class="movie-thumbnail">
                                 </td>
