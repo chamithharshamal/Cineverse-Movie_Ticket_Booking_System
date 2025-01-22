@@ -98,29 +98,40 @@ public boolean addMovie(Movie movie) {
     }
 
     // Update movie
-    public boolean updateMovie(Movie movie) {
-        String query = "UPDATE movies SET movie_name=?, language=?, content=?, "
-                + "trailer_link=?, image_file_name=?, rating=?, status=?, "
-                + "adult_ticket_price=?, child_ticket_price=? WHERE movie_id=?";
+   public boolean updateMovie(Movie movie) {
+    String query = "UPDATE movies SET movie_name=?, language=?, content=?, "
+            + "trailer_link=?, image_path=?, rating=?, status=?, "
+            + "adult_ticket_price=?, child_ticket_price=? WHERE movie_id=?";
+    
+    try (PreparedStatement pst = connection.prepareStatement(query)) {
+        // Debug print
+        System.out.println("Executing update for movie ID: " + movie.getMovieId());
         
-        try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, movie.getMovieName());
-            pst.setString(2, movie.getLanguage());
-            pst.setString(3, movie.getContent());
-            pst.setString(4, movie.getTrailerLink());
-            pst.setString(5, movie.getImagePath());
-            pst.setString(6, movie.getRating());
-            pst.setString(7, movie.getStatus());
-            pst.setDouble(8, movie.getAdultTicketPrice());
-            pst.setDouble(9, movie.getChildTicketPrice());
-            pst.setInt(10, movie.getMovieId());
+        pst.setString(1, movie.getMovieName());
+        pst.setString(2, movie.getLanguage());
+        pst.setString(3, movie.getContent());
+        pst.setString(4, movie.getTrailerLink());
+        pst.setString(5, movie.getImagePath());
+        pst.setString(6, movie.getRating());
+        pst.setString(7, movie.getStatus());
+        pst.setDouble(8, movie.getAdultTicketPrice());
+        pst.setDouble(9, movie.getChildTicketPrice());
+        pst.setInt(10, movie.getMovieId());
 
-            return pst.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        // Debug print
+        System.out.println("Executing query: " + query);
+        
+        int rowsAffected = pst.executeUpdate();
+        System.out.println("Rows affected: " + rowsAffected);
+        
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("SQL Error: " + e.getMessage());
+        return false;
     }
+}
+
 
     // Delete movie
     public boolean deleteMovie(int movieId) {
