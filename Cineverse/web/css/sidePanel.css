@@ -340,56 +340,40 @@ footer a,footer a:checked {
     text-decoration: none;
     color: #fff;
 }
-
-    .movie-table-container {
-        padding: 20px;
-        overflow-x: auto;
-    }
-
-    .movie-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background: black;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-
-    .movie-table th,
-    .movie-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        
-    }
-
-    .movie-table th {
-     background: black;
+.message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 4px;
+        background-color: #4CAF50;
+        color: white;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        min-width: 200px;
+        text-align: center;
         font-weight: bold;
     }
 
-    .movie-thumbnail {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 4px;
+    .message.error {
+        background-color: #f44336;
     }
 
-    .edit-btn,
-    .delete-btn {
-        padding: 6px 12px;
-        margin: 0 4px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(-20px);}
+        to {opacity: 1; transform: translateY(0);}
     }
 
-    .edit-btn {
-        background: #4CAF50;
-        color: white;
+    @keyframes fadeOut {
+        from {opacity: 1; transform: translateY(0);}
+        to {opacity: 0; transform: translateY(-20px);}
     }
 
-    .delete-btn {
-        background: #f44336;
-        color: white;
+    .message {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .message.hiding {
+        animation: fadeOut 0.5s ease-in;
     }
