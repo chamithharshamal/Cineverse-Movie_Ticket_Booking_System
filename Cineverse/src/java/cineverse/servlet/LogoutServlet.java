@@ -11,7 +11,6 @@ import javax.servlet.http.Cookie;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,7 +35,7 @@ public class LogoutServlet extends HttpServlet {
             }
         }
         
-        // Redirect to login page
-        response.sendRedirect("index.jsp");
+        // Redirect to login page using context path
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }
