@@ -23,8 +23,8 @@ public class ShowDAO {
             pst.setInt(1, show.getMovieId());
             pst.setInt(2, show.getHallId());
             pst.setString(3, show.getShowTime());
-            pst.setDate(4, show.getStartDate());
-            pst.setDate(5, show.getEndDate());
+            pst.setDate(4, (Date) show.getStartDate());
+            pst.setDate(5, (Date) show.getEndDate());
             
             return pst.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -33,15 +33,16 @@ public class ShowDAO {
         }
     }
 
-    public Map<LocalDate, List<Show>> getAvailableShowsByMovie(int movieId) {
-    Map<LocalDate, List<Show>> showsByDate = new TreeMap<>(); // TreeMap for sorted dates
+   public Map<LocalDate, List<Show>> getAvailableShowsByMovie(int movieId) {
+    Map<LocalDate, List<Show>> showsByDate = new TreeMap<>();
     LocalDate today = LocalDate.now();
     
-    String sql = "SELECT s.show_id, s.movie_id, s.hall_id, h.hall_name, " +
-                 "s.show_time, s.start_date, s.status, s.created_at " +
+    String sql = "SELECT s.show_id, s.movie_id, s.hall_id, h.hall_name, s.show_time, " +
+                 "s.start_date, s.status, s.created_at " +
                  "FROM shows s " +
                  "JOIN halls h ON s.hall_id = h.hall_id " +
-                 "WHERE s.movie_id = ? AND s.status = 'active' " +
+                 "WHERE s.movie_id = ? " +
+                 "AND s.status = 'active' " +
                  "AND s.start_date >= ? " +
                  "ORDER BY s.start_date, s.show_time";
     
@@ -69,6 +70,7 @@ public class ShowDAO {
     }
     return showsByDate;
 }
+
 
   public void close() {
         try {
