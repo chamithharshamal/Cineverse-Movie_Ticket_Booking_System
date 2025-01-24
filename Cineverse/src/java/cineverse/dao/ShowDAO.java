@@ -3,8 +3,11 @@ package cineverse.dao;
 import cineverse.model.Show;
 import cineverse.connection.DbConnection;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ShowDAO {
     private Connection conn;
@@ -30,32 +33,51 @@ public class ShowDAO {
         }
     }
 
-    public List<Show> getShowsByMovie(int movieId) {
-        List<Show> shows = new ArrayList<>();
-        String sql = "SELECT s.*, h.hall_name FROM shows s JOIN halls h ON s.hall_id = h.hall_id WHERE s.movie_id = ? AND s.status = 'active'";
+    public Map<LocalDate, List<Show>> getAvailableShowsByMovie(int movieId) {
+    Map<LocalDate, List<Show>> showsByDate = new TreeMap<>(); // TreeMap for sorted dates
+    LocalDate today = LocalDate.now();
+    
+    String sql = "SELECT s.show_id, s.movie_id, s.hall_id, h.hall_name, " +
+                 "s.show_time, s.start_date, s.status, s.created_at " +
+                 "FROM shows s " +
+                 "JOIN halls h ON s.hall_id = h.hall_id " +
+                 "WHERE s.movie_id = ? AND s.status = 'active' " +
+                 "AND s.start_date >= ? " +
+                 "ORDER BY s.start_date, s.show_time";
+    
+    try {
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, movieId);
+        pst.setDate(2, Date.valueOf(today));
+        ResultSet rs = pst.executeQuery();
         
-        try {
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, movieId);
-            ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            Show show = new Show();
+            show.setShowId(rs.getInt("show_id"));
+            show.setMovieId(rs.getInt("movie_id"));
+            show.setHallId(rs.getInt("hall_id"));
+            show.setShowTime(rs.getString("show_time"));
+            show.setStartDate(rs.getDate("start_date"));
+            show.setStatus(rs.getString("status"));
+            show.setHallName(rs.getString("hall_name"));
             
-            while (rs.next()) {
-                Show show = new Show();
-                show.setShowId(rs.getInt("show_id"));
-                show.setMovieId(rs.getInt("movie_id"));
-                show.setHallId(rs.getInt("hall_id"));
-                show.setShowTime(rs.getString("show_time"));
-                show.setStartDate(rs.getDate("start_date"));
-                show.setEndDate(rs.getDate("end_date"));
-                show.setStatus(rs.getString("status"));
-                show.setHallName(rs.getString("hall_name"));
-                shows.add(show);
+            LocalDate showDate = rs.getDate("start_date").toLocalDate();
+            showsByDate.computeIfAbsent(showDate, k -> new ArrayList<>()).add(show);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return showsByDate;
+}
+
+  public void close() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return shows;
     }
-
     // Add other necessary methods
 }
