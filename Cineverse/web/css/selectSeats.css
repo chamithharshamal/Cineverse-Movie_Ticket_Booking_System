@@ -1,0 +1,303 @@
+:root {
+    --primary-color: #facc15;
+    --bg-dark: #1c2231;
+    --text-light: #d1d5db;
+    --card-bg: #2d3241;
+}
+
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.seat-selection-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.screen-container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.screen {
+    background: linear-gradient(to bottom, var(--primary-color), transparent);
+    height: 25px;
+    width: 80%;
+    margin: 0 auto 20px;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+}
+
+.screen-text {
+    color: var(--text-light);
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.seats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.seat-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.row-label {
+    width: 30px;
+    text-align: right;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.seat {
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.3s ease;
+    background-color: var(--card-bg);
+}
+
+.seat:hover:not(.booked) {
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+}
+
+.seat.booked {
+    background-color: #333;
+    border-color: #333;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.seat.selected {
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+}
+
+.legend-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+.legend-box.available {
+    background-color: var(--card-bg);
+}
+
+.legend-box.booked {
+    background-color: #333;
+    border-color: #333;
+    opacity: 0.5;
+}
+
+.legend-box.selected {
+    background-color: var(--primary-color);
+}
+
+.booking-summary {
+    background-color: var(--card-bg);
+    padding: 30px 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+    width: 300px;
+    height: 263px;
+}
+
+.proceed-button {
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: transform 0.2s;
+}
+
+.proceed-button:hover {
+    transform: translateY(-2px);
+}
+
+.proceed-button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.type-container{
+    display: flex;
+    gap:20px;
+    justify-content: center;
+}
+.ticket-type-container {
+    background-color: var(--card-bg);
+    padding: 10px 25px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 1px solid var(--primary-color);
+    width: 500px;
+}
+
+.ticket-type-container h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.ticket-type-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 15px 0;
+}
+
+.ticket-type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--bg-dark);
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.ticket-type:hover {
+    background-color: rgba(250, 204, 21, 0.1);
+}
+
+.ticket-type label {
+    font-size: 16px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quantity-control button {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.quantity-control button:hover {
+    transform: translateY(-2px);
+}
+
+.quantity-control button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.quantity-control input {
+    width: 60px;
+    text-align: center;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-light);
+    background-color: var(--bg-dark);
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 14px;
+    margin-top: 12px;
+    text-align: center;
+    padding: 8px;
+    background-color: rgba(255, 68, 68, 0.1);
+    border-radius: 5px;
+    display: none;
+}
+
+.error-message:not(:empty) {
+    display: block;
+}
+
+/* Total seats display */
+.ticket-summary {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: var(--bg-dark);
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+}
+
+#totalSeatsSelected {
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Price display in labels */
+.ticket-type label span {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ticket-type {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .quantity-control {
+        justify-content: center;
+    }
+}
