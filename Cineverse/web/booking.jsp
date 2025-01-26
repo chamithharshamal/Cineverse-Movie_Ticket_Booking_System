@@ -21,37 +21,6 @@
         <link href="${pageContext.request.contextPath}/css/booking.css" rel="stylesheet">
         <style>
             <%= new String(Files.readAllBytes(Paths.get(application.getRealPath("/css/booking.css"))))%>
-            .show-expired {
-    opacity: 0.6;
-    pointer-events: none;
-    position: relative;
-}
-
-.show-expired::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-}
-
-.show-expired .book-button {
-    background: #666;
-    cursor: not-allowed;
-}
-
-.show-expired .show-time {
-    color: #666;
-}
-
-button[disabled] {
-    background-color: #666 !important;
-    cursor: not-allowed;
-}
-
         </style>
 
     </head>
