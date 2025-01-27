@@ -1,16 +1,16 @@
 <%@page import="cineverse.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
- 
+
     HttpSession userSession = request.getSession(false);
-    
+
     if (userSession == null || userSession.getAttribute("user") == null) {
         response.sendRedirect("../login.jsp");
         return;
     }
 
     User user = (User) userSession.getAttribute("user");
-    
+
     if (!"admin".equals(user.getRole())) {
         response.sendRedirect("../index.jsp");
         return;
@@ -42,12 +42,11 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="#">Admin Dashboard</a></li>
-                    <li><a href="addMovies.jsp">Movie</a></li>
-                    <li><a href="#">Ticket</a></li>
-                    <li><a href="#">Payment</a></li>
-                    <li><a href="manageNotifications.jsp">Notification</a></li>
-                    <li><a href="#">Feedback</a></li>
+                    <li><a href="addMovie.jsp">Movies</a></li>
+                    <li><a href="addShow.jsp">Shows</a></li>
                     <li><a href="manageUser.jsp">User</a></li>
+                    <li><a href="#">Payment</a></li>
+                    <li><a href="#">Feedback</a></li>
                     <li><a href="#">Report</a></li>
                 </ul>
             </nav>
