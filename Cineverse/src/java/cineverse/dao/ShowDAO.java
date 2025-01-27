@@ -21,32 +21,30 @@ public class ShowDAO {
     try {
         conn.setAutoCommit(false);
         
-        PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        pst.setInt(1, show.getMovieId());
-        pst.setInt(2, show.getHallId());
-        pst.setString(3, show.getShowTime());
-        pst.setDate(4, (Date) show.getStartDate());
-        pst.setDate(5, (Date) show.getEndDate());
-        
-        int affectedRows = pst.executeUpdate();
-        
-        if (affectedRows > 0) {
-            ResultSet generatedKeys = pst.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int showId = generatedKeys.getInt(1);
-                // Create seats for the new show
-                SeatDAO seatDAO = new SeatDAO();
-                boolean seatsCreated = seatDAO.createSeatsForShow(showId);
-                
-                if (seatsCreated) {
-                    conn.commit();
-                    return true;
+        try (PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pst.setInt(1, show.getMovieId());
+            pst.setInt(2, show.getHallId());
+            pst.setString(3, show.getShowTime());
+            pst.setDate(4, new java.sql.Date(show.getStartDate().getTime()));
+            pst.setDate(5, new java.sql.Date(show.getEndDate().getTime()));
+            
+            int affectedRows = pst.executeUpdate();
+            
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = pst.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int showId = generatedKeys.getInt(1);
+                        SeatDAO seatDAO = new SeatDAO();
+                        if (seatDAO.createSeatsForShow(showId)) {
+                            conn.commit();
+                            return true;
+                        }
+                    }
                 }
             }
+            conn.rollback();
+            return false;
         }
-        
-        conn.rollback();
-        return false;
     } catch (SQLException e) {
         try {
             conn.rollback();
@@ -63,6 +61,7 @@ public class ShowDAO {
         }
     }
 }
+
 
 
    public Map<LocalDate, List<Show>> getAvailableShowsByMovie(int movieId) {
