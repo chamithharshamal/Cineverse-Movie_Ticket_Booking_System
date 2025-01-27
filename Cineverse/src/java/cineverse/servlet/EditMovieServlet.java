@@ -26,25 +26,128 @@ import javax.servlet.http.Part;
 @WebServlet("/admin/EditMovieServlet")
 @MultipartConfig
 public class EditMovieServlet extends HttpServlet {
-    
+    private static final String UPLOAD_DIRECTORY = "images";
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String action = request.getParameter("action");
         
-        System.out.println("Action received: " + action); // Debug line
+        System.out.println("EditMovieServlet called with action: " + action);
         
-        if ("fetchMovie".equals(action)) {
-            handleFetchMovie(request, response);
-        } else if ("update".equals(action)) {
-            handleUpdateMovie(request, response);
-        } else {
-            session.setAttribute("message", "Invalid action specified!");
+        try {
+            if ("fetchMovie".equals(action)) {
+                handleFetchMovie(request, response);
+            } else if ("update".equals(action)) {
+                handleUpdateMovie(request, response);
+            } else {
+                session.setAttribute("messageType", "error");
+                session.setAttribute("message", "Invalid action specified!");
+                response.sendRedirect(request.getContextPath() + "/admin/addMovie.jsp");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("messageType", "error");
+            session.setAttribute("message", "Error: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/admin/addMovie.jsp");
         }
     }
-    
+
+    private void handleUpdateMovie(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        try {
+            // Get basic movie information
+            int movieId = Integer.parseInt(request.getParameter("movie-id"));
+            String movieName = request.getParameter("movie-name");
+            String movieLanguage = request.getParameter("movie-language");
+            String movieContent = request.getParameter("movie-content");
+            String movieTrailerLink = request.getParameter("movie-trailer");
+            String movieRating = request.getParameter("movie-rating");
+            String movieStatus = request.getParameter("movie-status");
+            double adultTicketPrice = Double.parseDouble(request.getParameter("adult-ticket-price"));
+            double childTicketPrice = Double.parseDouble(request.getParameter("child-ticket-price"));
+
+            // Handle image
+            String imagePath = null;
+            Part filePart = request.getPart("movie-image");
+            
+            if (filePart != null && filePart.getSize() > 0) {
+                // New image uploaded
+                String fileName = getSubmittedFileName(filePart);
+                if (fileName != null && !fileName.isEmpty()) {
+                    imagePath = processImageUpload(filePart, request);
+                }
+            } else {
+                // No new image, keep existing image path
+                imagePath = request.getParameter("current-image");
+                if (imagePath != null && imagePath.startsWith("../")) {
+                    imagePath = imagePath.substring(3); // Remove "../" prefix
+                }
+            }
+
+            // Create movie object
+            Movie movie = new Movie(
+                movieId, movieName, movieLanguage, movieContent,
+                movieTrailerLink, imagePath, movieRating, movieStatus,
+                adultTicketPrice, childTicketPrice
+            );
+
+            // Update movie in database
+            MovieDAO movieDAO = new MovieDAO();
+            boolean isUpdated = movieDAO.updateMovie(movie);
+
+            if (isUpdated) {
+                session.setAttribute("messageType", "success");
+                session.setAttribute("message", "Movie updated successfully!");
+            } else {
+                session.setAttribute("messageType", "error");
+                session.setAttribute("message", "Failed to update movie!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("messageType", "error");
+            session.setAttribute("message", "Error updating movie: " + e.getMessage());
+        }
+        response.sendRedirect(request.getContextPath() + "/admin/addMovie.jsp");
+    }
+
+    private String processImageUpload(Part filePart, HttpServletRequest request) throws IOException {
+        String fileName = getSubmittedFileName(filePart);
+        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+        
+        // Create directory if it doesn't exist
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        // Save file
+        String filePath = uploadPath + File.separator + fileName;
+        try (InputStream input = filePart.getInputStream()) {
+            Files.copy(input, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        // Return relative path for database
+        return UPLOAD_DIRECTORY + "/" + fileName;
+    }
+
+    private String getSubmittedFileName(Part part) {
+        if (part == null) return null;
+        
+        String header = part.getHeader("content-disposition");
+        if (header == null) return null;
+        
+        for (String token : header.split(";")) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf('=') + 1).trim()
+                           .replace("\"", "");
+            }
+        }
+        return null;
+    }
+
     private void handleFetchMovie(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -57,75 +160,15 @@ public class EditMovieServlet extends HttpServlet {
                 request.setAttribute("movieToEdit", movie);
                 request.getRequestDispatcher("/admin/addMovie.jsp").forward(request, response);
             } else {
+                session.setAttribute("messageType", "error");
                 session.setAttribute("message", "Movie not found!");
                 response.sendRedirect(request.getContextPath() + "/admin/addMovie.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            session.setAttribute("message", "Error: " + e.getMessage());
+            session.setAttribute("messageType", "error");
+            session.setAttribute("message", "Error fetching movie: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/admin/addMovie.jsp");
         }
-    }
-    
-    private void handleUpdateMovie(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        try {
-            // Get all form parameters
-            int movieId = Integer.parseInt(request.getParameter("movie-id"));
-            String movieName = request.getParameter("movie-name");
-            String movieLanguage = request.getParameter("movie-language");
-            String movieContent = request.getParameter("movie-content");
-            String movieTrailerLink = request.getParameter("movie-trailer");
-            String movieRating = request.getParameter("movie-rating");
-            String movieStatus = request.getParameter("movie-status");
-            double adultTicketPrice = Double.parseDouble(request.getParameter("adult-ticket-price"));
-            double childTicketPrice = Double.parseDouble(request.getParameter("child-ticket-price"));
-
-            // Debug printing
-            System.out.println("Updating movie with ID: " + movieId);
-            System.out.println("Movie Name: " + movieName);
-
-            // Handle image update
-            Part filePart = request.getPart("movie-image");
-            String imagePath;
-            
-            if (filePart != null && filePart.getSize() > 0) {
-                String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                String uploadPath = "C:\\Users\\Dell\\Documents\\GitHub\\Cineverse-Movie_Ticket_Booking_System\\Cineverse\\web\\images";
-                imagePath = "../images/" + fileName;
-
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdirs();
-                }
-
-                String absoluteImagePath = uploadPath + File.separator + fileName;
-                try (InputStream fileContent = filePart.getInputStream()) {
-                    Files.copy(fileContent, Paths.get(absoluteImagePath), StandardCopyOption.REPLACE_EXISTING);
-                }
-            } else {
-                imagePath = request.getParameter("current-image");
-            }
-
-            Movie movie = new Movie(
-                movieId, movieName, movieLanguage, movieContent,
-                movieTrailerLink, imagePath, movieRating, movieStatus,
-                adultTicketPrice, childTicketPrice
-            );
-
-            MovieDAO movieDAO = new MovieDAO();
-            boolean isUpdated = movieDAO.updateMovie(movie);
-
-            if (isUpdated) {
-                session.setAttribute("message", "Movie updated successfully!");
-            } else {
-                session.setAttribute("message", "Failed to update movie!");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.setAttribute("message", "Error updating movie: " + e.getMessage());
-        }
-        response.sendRedirect(request.getContextPath() + "/admin/addMovie.jsp");
     }
 }
