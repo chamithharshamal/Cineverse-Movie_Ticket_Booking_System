@@ -115,7 +115,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user", user);
                     
                     if ("admin".equals(user.getRole())) {
-                        response.sendRedirect("dashboard.jsp");
+                        response.sendRedirect("admin/addMovie.jsp");
                         return;
                     } else {
                         response.sendRedirect("index.jsp");
