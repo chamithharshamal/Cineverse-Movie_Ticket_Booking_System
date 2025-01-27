@@ -1,11 +1,8 @@
 package cineverse.model;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
+import java.sql.Date;
 
 public class Show {
-
     private int showId;
     private int movieId;
     private int hallId;
@@ -14,10 +11,11 @@ public class Show {
     private Date endDate;
     private String status;
     private String hallName;
-    private Date createdAt;
+    
 
     // Default constructor
     public Show() {
+        this.status = "active";
     }
 
     // Constructor for creating new shows
@@ -93,13 +91,5 @@ public class Show {
 
     public void setHallName(String hallName) {
         this.hallName = hallName;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 }
