@@ -10,13 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="cineverse.model.Movie"%>
 <%@page import="cineverse.dao.MovieDAO"%>
-<%
-    HttpSession userSession = request.getSession(false);
-    if (userSession == null || userSession.getAttribute("user") == null) {
-        response.sendRedirect("../login.jsp");
-        return;
-    }
-%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
