@@ -41,7 +41,7 @@ public class AddMovieServlet extends HttpServlet {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
             String uploadPath = "C:\\Users\\Dell\\Documents\\GitHub\\Cineverse-Movie_Ticket_Booking_System\\Cineverse\\web\\images";
-            String relativeImagePath = "../images/" + fileName;
+            String relativeImagePath = "images/" + fileName;
 
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
@@ -69,11 +69,14 @@ public class AddMovieServlet extends HttpServlet {
             MovieDAO movieDAO = new MovieDAO();
             boolean isAdded = movieDAO.addMovie(movie);
 
-            if (isAdded) {
-                session.setAttribute("message", "Movie added successfully!");
-            } else {
-                session.setAttribute("message", "Failed to add movie!");
-            }
+           if (isAdded) {
+    session.setAttribute("messageType", "success");
+    session.setAttribute("message", "Movie added successfully!");
+} else {
+    session.setAttribute("messageType", "error");
+    session.setAttribute("message", "Failed to add movie!");
+}
+
         } catch (Exception e) {
             session.setAttribute("message", "Error: " + e.getMessage());
         }
