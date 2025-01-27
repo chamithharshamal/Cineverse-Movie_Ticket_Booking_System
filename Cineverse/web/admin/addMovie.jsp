@@ -4,9 +4,27 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+
+    HttpSession userSession = request.getSession(false);
+
+    if (userSession == null || userSession.getAttribute("user") == null) {
+        response.sendRedirect("../login.jsp");
+        return;
+    }
+
+    User user = (User) userSession.getAttribute("user");
+
+    if (!"admin".equals(user.getRole())) {
+        response.sendRedirect("../index.jsp");
+        return;
+    }
+
+    
     String message = (String) session.getAttribute("message");
+    String messageType = (String) session.getAttribute("messageType");
     if (message != null) {
         session.removeAttribute("message");
+        session.removeAttribute("messageType");
     }
 %>
 
@@ -19,7 +37,7 @@
         <link href="../css/sidePanel.css" rel="stylesheet">
     </head>
     <body>
-        <div id="message" class="message"></div>
+        <div id="message" class="message <%= messageType != null ? messageType : "" %>"></div>
 
         <div class="container">
             <div class="left">
@@ -37,11 +55,15 @@
                     <%                        Movie movieToEdit = (Movie) request.getAttribute("movieToEdit");
                     %>
 
-                    <form class="movie-form" action="${pageContext.request.contextPath}/admin/EditMovieServlet" 
-                          method="post" enctype="multipart/form-data" onsubmit="return validateForm(this);">
-                        <input type="hidden" name="action" value="<%= movieToEdit != null ? "update" : "add"%>">
-
-                        <input type="hidden" name="submission_token" value="<%= System.currentTimeMillis()%>">
+                 <form class="movie-form" action="${pageContext.request.contextPath}/admin/EditMovieServlet" 
+      method="post" enctype="multipart/form-data" onsubmit="return validateForm(this);">
+    
+    <input type="hidden" name="action" value="<%= movieToEdit != null ? "update" : "add" %>">
+    
+    <!-- If editing, include the current image path -->
+    <% if (movieToEdit != null) { %>
+        <input type="hidden" name="current-image" value="<%= movieToEdit.getImagePath() %>">
+    <% } %>
 
                         <div class="form-group">
                             <label for="movie-id">Movie ID:</label>
@@ -79,15 +101,14 @@
                                    value="<%= movieToEdit != null ? movieToEdit.getTrailerLink() : ""%>" required />
                         </div>
 
-                        <div class="form-group">
-                            <label for="movie-image">Movie Image:</label>
-                            <input type="file" id="movie-image" name="movie-image" accept="image/*" 
-                                   <%= movieToEdit == null ? "required" : ""%> />
-                            <% if (movieToEdit != null) {%>
-                            <p>Current image: <%= movieToEdit.getImagePath()%></p>
-                            <input type="hidden" name="current-image" value="<%= movieToEdit.getImagePath()%>" />
-                            <% }%>
-                        </div>
+                       <div class="form-group">
+        <label for="movie-image">Movie Image:</label>
+        <input type="file" id="movie-image" name="movie-image" accept="image/*" 
+               <%= movieToEdit == null ? "required" : "" %>>
+        <% if (movieToEdit != null && movieToEdit.getImagePath() != null) { %>
+            <p>Current image: <%= movieToEdit.getImagePath() %></p>
+        <% } %>
+    </div>
 
                         <div class="form-group">
                             <label for="movie-rating">Rating:</label>
@@ -209,14 +230,17 @@
             <p>&copy; 2025 Cineverse. All Rights Reserved.</p>
         </footer>
         <script>
-            function showMessage(text) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.textContent = text;
-            messageDiv.style.display = 'block';
-            setTimeout(() = > {  // Fixed arrow function syntax
-            messageDiv.style.display = 'none';
-            }, 4000);
-            }
+          function showMessage(text) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = text;
+    messageDiv.classList.add('show'); // Add a class for styling
+    messageDiv.style.display = 'block';
+    setTimeout(() => {  // Correct arrow function syntax
+        messageDiv.style.display = 'none';
+        messageDiv.classList.remove('show');
+    }, 4000);
+}
+
 
             function preventDoubleSubmission(form) {
             if (form.submitted) {
