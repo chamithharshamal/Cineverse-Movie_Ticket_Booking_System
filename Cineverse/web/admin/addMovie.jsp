@@ -3,6 +3,12 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    HttpSession userSession = request.getSession(false);
+    if (userSession == null || userSession.getAttribute("user") == null) {
+        response.sendRedirect("../login.jsp");
+        return;
+    }
+
     String message = (String) session.getAttribute("message");
     if (message != null) {
         session.removeAttribute("message");
@@ -33,8 +39,7 @@
                 <!-- Add Movie Form Section -->
                 <div id="add-movie-form" class="form-section">
                     <h2>Add New Movie</h2>
-                    <%
-                        Movie movieToEdit = (Movie) request.getAttribute("movieToEdit");
+                    <%                        Movie movieToEdit = (Movie) request.getAttribute("movieToEdit");
                     %>
 
                     <form class="movie-form" action="${pageContext.request.contextPath}/admin/EditMovieServlet" 
@@ -208,77 +213,74 @@
         <footer>
             <p>&copy; 2025 Cineverse. All Rights Reserved.</p>
         </footer>
-       <script>
-    function showMessage(text) {
-        const messageDiv = document.getElementById('message');
-        messageDiv.textContent = text;
-        messageDiv.style.display = 'block';
-        
-        setTimeout(() => {  // Fixed arrow function syntax
+        <script>
+            function showMessage(text) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.style.display = 'block';
+            setTimeout(() = > {  // Fixed arrow function syntax
             messageDiv.style.display = 'none';
-        }, 4000);
-    }
+            }, 4000);
+            }
 
-    function preventDoubleSubmission(form) {
-        if (form.submitted) {
+            function preventDoubleSubmission(form) {
+            if (form.submitted) {
             showMessage('Form already submitted. Please wait...');
             return false;
-        }
-        form.submitted = true;
-        form.querySelector('.submit-btn').disabled = true;
-        return validateForm(form); // Combine with form validation
-    }
+            }
+            form.submitted = true;
+            form.querySelector('.submit-btn').disabled = true;
+            return validateForm(form); // Combine with form validation
+            }
 
-    function validateForm(form) {
-        console.log('Validating form...');
-        
-        // Get form values
-        const movieId = form['movie-id'].value;
-        const movieName = form['movie-name'].value;
-        const adultPrice = parseFloat(form['adult-ticket-price'].value);
-        const childPrice = parseFloat(form['child-ticket-price'].value);
-
-        // Basic validation
-        if (!movieId || !movieName) {
+            function validateForm(form) {
+            console.log('Validating form...');
+            // Get form values
+            const movieId = form['movie-id'].value;
+            const movieName = form['movie-name'].value;
+            const adultPrice = parseFloat(form['adult-ticket-price'].value);
+            const childPrice = parseFloat(form['child-ticket-price'].value);
+            // Basic validation
+            if (!movieId || !movieName) {
             showMessage('Movie ID and Name are required!');
             return false;
-        }
+            }
 
-        if (childPrice > adultPrice) {
+            if (childPrice > adultPrice) {
             showMessage('Child ticket price cannot be higher than adult ticket price!');
             return false;
-        }
+            }
 
-        // Log form submission
-        console.log('Form validation passed. Submitting...');
-        return true;
-    }
+            // Log form submission
+            console.log('Form validation passed. Submitting...');
+            return true;
+            }
 
-    function resetForm() {
-        if (confirm('Are you sure you want to reset the form?')) {
+            function resetForm() {
+            if (confirm('Are you sure you want to reset the form?')) {
             document.querySelector('.movie-form').reset();
             window.location.href = '${pageContext.request.contextPath}/admin/addMovie.jsp';
-        }
-    }
+            }
+            }
 
-    // Event Listeners
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize form submission handler
-        const movieForm = document.querySelector('.movie-form');
-        if (movieForm) {
+            // Event Listeners
+            document.addEventListener('DOMContentLoaded', function() {
+            // Initialize form submission handler
+            const movieForm = document.querySelector('.movie-form');
+            if (movieForm) {
             movieForm.addEventListener('submit', function(e) {
-                if (!preventDoubleSubmission(this)) {
-                    e.preventDefault();
-                }
+            if (!preventDoubleSubmission(this)) {
+            e.preventDefault();
+            }
             });
-        }
+            }
 
-        // Show message if exists
-        <% if (message != null && !message.isEmpty()) { %>
-            showMessage('<%= message %>');
-        <% } %>
-    });
-</script>
+            // Show message if exists
+            <% if (message != null && !message.isEmpty()) {%>
+            showMessage('<%= message%>');
+            <% }%>
+            });
+        </script>
 
 
     </body>
