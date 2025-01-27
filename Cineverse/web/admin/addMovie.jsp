@@ -19,7 +19,6 @@
         return;
     }
 
-    
     String message = (String) session.getAttribute("message");
     String messageType = (String) session.getAttribute("messageType");
     if (message != null) {
@@ -37,7 +36,7 @@
         <link href="../css/sidePanel.css" rel="stylesheet">
     </head>
     <body>
-        <div id="message" class="message <%= messageType != null ? messageType : "" %>"></div>
+        <div id="message" class="message <%= messageType != null ? messageType : ""%>"></div>
 
         <div class="container">
             <div class="left">
@@ -55,15 +54,19 @@
                     <%                        Movie movieToEdit = (Movie) request.getAttribute("movieToEdit");
                     %>
 
-                 <form class="movie-form" action="${pageContext.request.contextPath}/admin/EditMovieServlet" 
-      method="post" enctype="multipart/form-data" onsubmit="return validateForm(this);">
-    
-    <input type="hidden" name="action" value="<%= movieToEdit != null ? "update" : "add" %>">
-    
-    <!-- If editing, include the current image path -->
-    <% if (movieToEdit != null) { %>
-        <input type="hidden" name="current-image" value="<%= movieToEdit.getImagePath() %>">
-    <% } %>
+                    <form class="movie-form" 
+                          action="${pageContext.request.contextPath}/admin/<%= movieToEdit != null ? "EditMovieServlet" : "AddMovieServlet"%>" 
+                          method="post" 
+                          enctype="multipart/form-data" 
+                          onsubmit="return validateForm(this);">
+
+
+                        <input type="hidden" name="action" value="<%= movieToEdit != null ? "update" : "add"%>">
+
+                        <!-- If editing, include the current image path -->
+                        <% if (movieToEdit != null) {%>
+                        <input type="hidden" name="current-image" value="<%= movieToEdit.getImagePath()%>">
+                        <% }%>
 
                         <div class="form-group">
                             <label for="movie-id">Movie ID:</label>
@@ -101,14 +104,14 @@
                                    value="<%= movieToEdit != null ? movieToEdit.getTrailerLink() : ""%>" required />
                         </div>
 
-                       <div class="form-group">
-        <label for="movie-image">Movie Image:</label>
-        <input type="file" id="movie-image" name="movie-image" accept="image/*" 
-               <%= movieToEdit == null ? "required" : "" %>>
-        <% if (movieToEdit != null && movieToEdit.getImagePath() != null) { %>
-            <p>Current image: <%= movieToEdit.getImagePath() %></p>
-        <% } %>
-    </div>
+                        <div class="form-group">
+                            <label for="movie-image">Movie Image:</label>
+                            <input type="file" id="movie-image" name="movie-image" accept="image/*" 
+                                   <%= movieToEdit == null ? "required" : ""%>>
+                            <% if (movieToEdit != null && movieToEdit.getImagePath() != null) {%>
+                            <p>Current image: <%= movieToEdit.getImagePath()%></p>
+                            <% }%>
+                        </div>
 
                         <div class="form-group">
                             <label for="movie-rating">Rating:</label>
@@ -230,16 +233,16 @@
             <p>&copy; 2025 Cineverse. All Rights Reserved.</p>
         </footer>
         <script>
-          function showMessage(text) {
-    const messageDiv = document.getElementById('message');
-    messageDiv.textContent = text;
-    messageDiv.classList.add('show'); // Add a class for styling
-    messageDiv.style.display = 'block';
-    setTimeout(() => {  // Correct arrow function syntax
-        messageDiv.style.display = 'none';
-        messageDiv.classList.remove('show');
-    }, 4000);
-}
+            function showMessage(text) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.classList.add('show'); // Add a class for styling
+            messageDiv.style.display = 'block';
+            setTimeout(() = > {  // Correct arrow function syntax
+            messageDiv.style.display = 'none';
+            messageDiv.classList.remove('show');
+            }, 4000);
+            }
 
 
             function preventDoubleSubmission(form) {

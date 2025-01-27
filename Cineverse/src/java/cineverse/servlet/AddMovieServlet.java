@@ -91,7 +91,7 @@ public class AddMovieServlet extends HttpServlet {
     }
 
     private boolean isValidImageFile(String fileName) {
-        String[] allowedExtensions = {".jpg", ".jpeg", ".png", ".gif", ".webp"};
+        String[] allowedExtensions = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif"};
         String fileExtension = fileName.toLowerCase();
         for (String extension : allowedExtensions) {
             if (fileExtension.endsWith(extension)) {
