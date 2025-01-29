@@ -1,26 +1,6 @@
 <%@page import="cineverse.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
 
-    HttpSession userSession = request.getSession(false);
-
-    if (userSession == null || userSession.getAttribute("user") == null) {
-        response.sendRedirect("../login.jsp");
-        return;
-    }
-
-    User user = (User) userSession.getAttribute("user");
-
-    if (!"admin".equals(user.getRole())) {
-        response.sendRedirect("../index.jsp");
-        return;
-    }
-
-    String message = (String) session.getAttribute("message");
-    if (message != null) {
-        session.removeAttribute("message");
-    }
-%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -41,7 +21,7 @@
             <!-- Sidebar Navigation -->
             <nav class="sidebar-nav">
                 <ul>
-                    <li><a href="#">Admin Dashboard</a></li>
+                    <li><a href="../index.jsp">Website</a></li>
                     <li><a href="addMovie.jsp">Movies</a></li>
                     <li><a href="addShow.jsp">Shows</a></li>
                     <li><a href="manageUser.jsp">User</a></li>
