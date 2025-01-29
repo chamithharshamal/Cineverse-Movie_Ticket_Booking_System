@@ -19,21 +19,64 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Shows Management</title>
         <link href="../css/addShow.css" rel="stylesheet">
+        <style>
+            #messageContainer {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: auto;
+}
+
+.message {
+    padding: 15px 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.3s ease-in;
+    transition: opacity 0.3s ease-out;
+}
+
+.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.error {
+    background-color: #f44336;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Add this to ensure messages are visible over other content */
+.message {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-weight: bold;
+}
+
+            </style>
     </head>
     <body>
+         <div id="messageContainer">
         <%
             String message = (String) session.getAttribute("message");
             String messageType = (String) session.getAttribute("messageType");
             if (message != null) {
+                System.out.println("Message found: " + message); // Debug line
+        %>
+                <div class="message <%= messageType %>" id="messageDiv">
+                    <%= message %>
+                </div>
+        <%
                 session.removeAttribute("message");
                 session.removeAttribute("messageType");
-        %>
-        <div class="message <%= messageType%>">
-            <%= message%>
-        </div>
-        <%
             }
         %>
+    </div>
 
         <div class="container">
             <div class="left">
@@ -143,32 +186,31 @@
             return true;
             }
 
-            function showMessage(message, type) {
-            
-            let messageDiv = document.querySelector('.message');
-            if (!messageDiv) {
-            messageDiv = document.createElement('div');
-            messageDiv.className = 'message';
-            document.body.insertBefore(messageDiv, document.body.firstChild);
-            }
-
-            // Set message content
+          function showMessage(message, type) {
+            const messageContainer = document.getElementById('messageContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
             messageDiv.textContent = message;
-            messageDiv.className = 'message ' + type;
-            messageDiv.style.display = 'block';
-           
-            setTimeout(function() {  
-            messageDiv.style.display = 'none';
+            messageContainer.appendChild(messageDiv);
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                messageDiv.remove();
             }, 3000);
+        }
+
+        // Check for message on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageDiv = document.getElementById('messageDiv');
+            if (messageDiv) {
+                setTimeout(() => {
+                    messageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        messageDiv.remove();
+                    }, 300);
+                }, 3000);
             }
-
-
-            // Set minimum date for date inputs
-            document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('startDate').min = today;
-            document.getElementById('endDate').min = today;
-            });
+        });
         </script>
     </body>
 </html>

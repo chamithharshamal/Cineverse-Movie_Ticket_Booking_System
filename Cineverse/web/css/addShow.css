@@ -1,98 +1,135 @@
 header h1 {
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-        }
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
 
-        .movie-form {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 10px;
-            max-width: 800px;
-        }
+.movie-form {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 800px;
+}
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-        }
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
 
-        input[type="text"],
-        input[type="date"],
-        select {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--primary-color);
-            background: var(--bg-dark);
-            color: var(--text-light);
-            border-radius: 5px;
-        }
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--primary-color);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    border-radius: 5px;
+}
 
-        .timeslot {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
+.timeslot {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
 
-        .timeslot div {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+.timeslot div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 
-        button {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
 
-        button[type="submit"] {
-            background-color: var(--primary-color);
-            color: var(--bg-dark);
-            margin-right: 1rem;
-        }
+button[type="submit"] {
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+    margin-right: 1rem;
+}
 
-        button[type="button"] {
-            background-color: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
+button[type="button"] {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background: var(--card-bg);
-            color: var(--text-light);
-        }
-       
-    .message {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 15px 30px;
-        border-radius: 5px;
-        z-index: 1000;
-        display: none;
-        text-align: center;
-        min-width: 300px;
-    }
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: var(--card-bg);
+    color: var(--text-light);
+}
 
-    .message.success {
-        background-color: #4CAF50;
-        color: white;
-    }
+.message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none;
+    text-align: center;
+    min-width: 300px;
+}
 
-    .message.error {
-        background-color: #f44336;
-        color: white;
-    }
+.message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.message.error {
+    background-color: #f44336;
+    color: white;
+}
+#messageContainer {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: auto;
+}
+
+.message {
+    padding: 15px 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.3s ease-in;
+    transition: opacity 0.3s ease-out;
+}
+
+.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.error {
+    background-color: #f44336;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Add this to ensure messages are visible over other content */
+.message {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-weight: bold;
+}
