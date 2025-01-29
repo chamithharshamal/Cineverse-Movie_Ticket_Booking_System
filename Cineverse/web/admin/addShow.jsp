@@ -19,46 +19,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Shows Management</title>
         <link href="../css/addShow.css" rel="stylesheet">
-        <style>
-            #messageContainer {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    width: auto;
-}
-
-.message {
-    padding: 15px 30px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    animation: fadeIn 0.3s ease-in;
-    transition: opacity 0.3s ease-out;
-}
-
-.success {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.error {
-    background-color: #f44336;
-    color: white;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Add this to ensure messages are visible over other content */
-.message {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    font-weight: bold;
-}
-
-            </style>
     </head>
     <body>
          <div id="messageContainer">
@@ -193,7 +153,7 @@
             messageDiv.textContent = message;
             messageContainer.appendChild(messageDiv);
 
-            // Auto-hide after 3 seconds
+           
             setTimeout(() => {
                 messageDiv.remove();
             }, 3000);
