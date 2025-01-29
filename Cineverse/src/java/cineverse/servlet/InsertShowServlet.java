@@ -1,112 +1,104 @@
 package cineverse.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import cineverse.connection.DbConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Date;
+import cineverse.model.Show;
+import java.sql.*;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/admin/insertShowServlet")
 public class InsertShowServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            
         HttpSession session = request.getSession();
-
-        try (Connection conn = DbConnection.getConnection()) {
-            conn.setAutoCommit(false); // Start transaction
-
-            // Get form parameters
+        
+        try {
+            // Retrieve form data
             int movieId = Integer.parseInt(request.getParameter("movieId"));
             int hallId = Integer.parseInt(request.getParameter("hallId"));
+            LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
+            LocalDate endDate = LocalDate.parse(request.getParameter("endDate"));
             String[] showTimes = request.getParameterValues("showTime");
-            
-            // Validate show times
+
             if (showTimes == null || showTimes.length == 0) {
-                session.setAttribute("messageType", "error");
                 session.setAttribute("message", "Please select at least one show time");
-                response.sendRedirect(request.getContextPath() + "/admin/addShow.jsp");
+                session.setAttribute("messageType", "error");
+                response.sendRedirect("addShow.jsp");
                 return;
             }
 
-            Date startDate = Date.valueOf(request.getParameter("startDate"));
-            Date endDate = Date.valueOf(request.getParameter("endDate"));
-            
-            // Calculate days between
-            LocalDate start = startDate.toLocalDate();
-            LocalDate end = endDate.toLocalDate();
-            long daysBetween = ChronoUnit.DAYS.between(start, end) + 1;
+            try (Connection conn = DbConnection.getConnection()) {
+                conn.setAutoCommit(false);
 
-            try {
-                String showSql = "INSERT INTO show_schedule (movie_id, hall_id, show_date, show_time, end_date, status) VALUES (?, ?, ?, ?, ?, 'active')";
-                
-                try (PreparedStatement pstmt = conn.prepareStatement(showSql, Statement.RETURN_GENERATED_KEYS)) {
-                    // Create shows for each day and time slot
-                    for (int i = 0; i < daysBetween; i++) {
-                        LocalDate currentDate = start.plusDays(i);
-                        Date showDate = Date.valueOf(currentDate);
+                try {
+                    String showSql = "INSERT INTO shows (movie_id, hall_id, show_time, start_date, end_date, status) " +
+                                   "VALUES (?, ?, ?, ?, ?, 'active')";
+                    
+                    try (PreparedStatement pstmt = conn.prepareStatement(showSql, Statement.RETURN_GENERATED_KEYS)) {
+                        LocalDate currentDate = startDate;
                         
-                        for (String showTime : showTimes) {
-                            pstmt.setInt(1, movieId);
-                            pstmt.setInt(2, hallId);
-                            pstmt.setDate(3, showDate);
-                            pstmt.setString(4, showTime);
-                            pstmt.setDate(5, endDate);
-                            pstmt.executeUpdate();
+                        while (!currentDate.isAfter(endDate)) {
+                            for (String showTime : showTimes) {
+                                pstmt.setInt(1, movieId);
+                                pstmt.setInt(2, hallId);
+                                pstmt.setString(3, showTime);
+                                pstmt.setDate(4, java.sql.Date.valueOf(currentDate));
+                                pstmt.setDate(5, java.sql.Date.valueOf(endDate));
+                                pstmt.executeUpdate();
 
-                            // Get the generated show_id and create seats
-                            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                                ResultSet generatedKeys = pstmt.getGeneratedKeys();
                                 if (generatedKeys.next()) {
                                     int showId = generatedKeys.getInt(1);
                                     insertSeats(conn, showId);
                                 }
                             }
+                            currentDate = currentDate.plusDays(1);
                         }
                     }
+
+                    conn.commit();
+                    session.setAttribute("message", "Shows and seats added successfully!");
+                    session.setAttribute("messageType", "success");
+
+                } catch (SQLException e) {
+                    conn.rollback();
+                    throw e;
+                } finally {
+                    conn.setAutoCommit(true);
                 }
 
-                conn.commit();
-                session.setAttribute("messageType", "success");
-                session.setAttribute("message", "Shows added successfully!");
-
             } catch (SQLException e) {
-                conn.rollback();
+                e.printStackTrace();
+                session.setAttribute("message", "Error: " + e.getMessage());
                 session.setAttribute("messageType", "error");
-                session.setAttribute("message", "Error adding shows: " + e.getMessage());
-                throw e;
-            } finally {
-                conn.setAutoCommit(true);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            session.setAttribute("message", "Error: " + e.getMessage());
             session.setAttribute("messageType", "error");
-            session.setAttribute("message", "System error: " + e.getMessage());
         }
         
-        response.sendRedirect(request.getContextPath() + "/admin/addShow.jsp");
+        response.sendRedirect("addShow.jsp");
     }
 
     private void insertSeats(Connection conn, int showId) throws SQLException {
         String seatSql = "INSERT INTO seats (show_id, seat_number, is_booked) VALUES (?, ?, 0)";
         try (PreparedStatement seatStmt = conn.prepareStatement(seatSql)) {
-            // Create seats for each show (A1 to A21)
-            for (int i = 1; i <= 21; i++) {
-                seatStmt.setInt(1, showId);
-                seatStmt.setString(2, "A" + i);
-                seatStmt.addBatch();
+            char[] rows = {'A', 'B', 'C', 'D'};
+            for (char row : rows) {
+                for (int i = 1; i <= 10; i++) {
+                    seatStmt.setInt(1, showId);
+                    seatStmt.setString(2, row + String.valueOf(i));
+                    seatStmt.addBatch();
+                }
             }
             seatStmt.executeBatch();
         }
