@@ -138,26 +138,37 @@ function selectSeat(seatElement) {
         seatElement.classList.add('selected');
         selectedSeats.push(seatNumber);
     }
-    
-    updateBookingSummary();
+
     updateTicketTypeSection();
+ 
+    updateBookingSummary();
+  
+    validateTicketCounts();
 }
 
 function updateTicketTypeSection() {
     const ticketTypeSection = document.getElementById('ticketTypeSelection');
     const totalSeatsSelected = document.getElementById('totalSeatsSelected');
     
+    totalSeatsSelected.textContent = selectedSeats.length;
+    
     if(selectedSeats.length > 0) {
         ticketTypeSection.style.display = 'block';
-        totalSeatsSelected.textContent = selectedSeats.length;
-        // Reset counts when seats change
+  
         adultCount = 0;
         childCount = 0;
         document.getElementById('adultCount').value = 0;
         document.getElementById('childCount').value = 0;
         updateBookingSummary();
     } else {
-        ticketTypeSection.style.display = 'none';
+        // Reset everything when no seats are selected
+        ticketTypeSection.style.display = 'block';
+        totalSeatsSelected.textContent = '0';
+        adultCount = 0;
+        childCount = 0;
+        document.getElementById('adultCount').value = 0;
+        document.getElementById('childCount').value = 0;
+        updateBookingSummary();
     }
 }
 
