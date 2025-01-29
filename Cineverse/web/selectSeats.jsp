@@ -55,7 +55,7 @@
                         // Find if seat is booked
                         for(Seat seat : seats) {
                             if(seat.getSeatNumber().equals(seatNumber)) {
-                                isBooked = seat.isIsBooked();
+                                isBooked = seat.isBooked();
                                 break;
                             }
                         }

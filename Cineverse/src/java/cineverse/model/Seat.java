@@ -1,26 +1,23 @@
-
 package cineverse.model;
-
 
 public class Seat {
     private int seatId;
-    private Show show;
+    private int showId;
     private String seatNumber;
     private boolean isBooked;
-    
-    public Seat(){}
-    
-    public Seat(int seatId, Show show, String seatNumber, boolean isBooked) {
-        this.seatId = seatId;
-        this.show = show;
+
+    // Default constructor
+    public Seat() {
+    }
+
+    // Constructor with parameters
+    public Seat(int showId, String seatNumber) {
+        this.showId = showId;
         this.seatNumber = seatNumber;
-        this.isBooked = isBooked;
+        this.isBooked = false;
     }
 
-    public Seat(String string, boolean aBoolean) {
-       
-    }
-
+    // Getters and Setters
     public int getSeatId() {
         return seatId;
     }
@@ -29,12 +26,12 @@ public class Seat {
         this.seatId = seatId;
     }
 
-    public Show getShow() {
-        return show;
+    public int getShowId() {
+        return showId;
     }
 
-    public void setShow(Show show) {
-        this.show = show;
+    public void setShowId(int showId) {
+        this.showId = showId;
     }
 
     public String getSeatNumber() {
@@ -45,13 +42,11 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public boolean isIsBooked() {
+    public boolean isBooked() {
         return isBooked;
     }
 
-    public void setIsBooked(boolean isBooked) {
-        this.isBooked = isBooked;
+    public void setBooked(boolean booked) {
+        isBooked = booked;
     }
-
-    
 }
