@@ -28,11 +28,12 @@ public class DeleteMovieServlet extends HttpServlet {
             boolean isDeleted = movieDAO.deleteMovie(movieId);
 
             if (isDeleted) {
-                session.setAttribute("message", "Movie deleted successfully!");
+                session.setAttribute("message", "Movie and all related shows and seats deleted successfully!");
             } else {
-                session.setAttribute("message", "Failed to delete movie!");
+                session.setAttribute("message", "Failed to delete movie and its related data!");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             session.setAttribute("message", "Error: " + e.getMessage());
         }
 

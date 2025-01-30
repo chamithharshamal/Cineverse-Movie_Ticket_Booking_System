@@ -37,4 +37,16 @@ public class SeatDAO {
         }
         return seats;
     }
+    
+      public boolean deleteSeatsForShow(int showId) {
+        String sql = "DELETE FROM seats WHERE show_id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, showId);
+            return pst.executeUpdate() >= 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

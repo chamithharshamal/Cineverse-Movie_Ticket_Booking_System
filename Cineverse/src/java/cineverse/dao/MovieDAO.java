@@ -141,15 +141,64 @@ public List<Movie> getAllMovies() {
 
 
     // Delete movie
-    public boolean deleteMovie(int movieId) {
-        String query = "DELETE FROM movies WHERE movie_id = ?";
-        
-        try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, movieId);
-            return pst.executeUpdate() > 0;
+   public boolean deleteMovie(int movieId) {
+        Connection conn = null;
+        try {
+            conn = DbConnection.getConnection();
+            conn.setAutoCommit(false); 
+
+            
+            SeatDAO seatDAO = new SeatDAO();
+            ShowDAO showDAO = new ShowDAO();
+
+            List<Integer> showIds = showDAO.getShowIdsByMovieId(movieId);
+
+           
+            for (int showId : showIds) {
+                if (!seatDAO.deleteSeatsForShow(showId)) {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            if (!showDAO.deleteShowsForMovie(movieId)) {
+                conn.rollback();
+                return false;
+            }
+
+            String sql = "DELETE FROM movies WHERE movie_id = ?";
+            try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                pst.setInt(1, movieId);
+                int result = pst.executeUpdate();
+                
+                if (result > 0) {
+                    conn.commit();
+                    return true;
+                } else {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
         } catch (SQLException e) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -148,6 +148,36 @@ public class ShowDAO {
         }
     }
     
+        public List<Integer> getShowIdsByMovieId(int movieId) {
+        List<Integer> showIds = new ArrayList<>();
+        String sql = "SELECT show_id FROM shows WHERE movie_id = ?";
+        
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, movieId);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    showIds.add(rs.getInt("show_id"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return showIds;
+    }
+
+    public boolean deleteShowsForMovie(int movieId) {
+        String sql = "DELETE FROM shows WHERE movie_id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, movieId);
+            return pst.executeUpdate() >= 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // Add method to update show status
     public boolean updateShowStatus(int showId, String status) {
         String sql = "UPDATE shows SET status = ? WHERE show_id = ?";
