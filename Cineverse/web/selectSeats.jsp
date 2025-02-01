@@ -6,12 +6,32 @@
 <%@page import="java.util.List"%>
 <%@page import="cineverse.model.Movie"%>
 <%@page import="cineverse.dao.MovieDAO"%>
-<%
-    HttpSession userSession = request.getSession(false);
+
+ <%
+       HttpSession userSession = request.getSession(false);
     if (userSession == null || userSession.getAttribute("user") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
+      String userEmail = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("userEmail".equals(cookie.getName())) {
+                    userEmail = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        
+    int showId = Integer.parseInt(request.getParameter("showId"));
+    ShowDAO showDAO = new ShowDAO();
+    MovieDAO movieDAO = new MovieDAO();
+    SeatDAO seatDAO = new SeatDAO();
+    
+    Show show = showDAO.getShowById(showId);
+    Movie movie = movieDAO.getMovieById(show.getMovieId()); // Get the movie object
+    List<Seat> seats = seatDAO.getSeatsByShowId(showId);
 %>
 
 <!DOCTYPE html>
@@ -24,16 +44,7 @@
     <link href="css/selectSeats.css" rel="stylesheet">
 </head>
 <body>
-  <%
-    int showId = Integer.parseInt(request.getParameter("showId"));
-    ShowDAO showDAO = new ShowDAO();
-    MovieDAO movieDAO = new MovieDAO();
-    SeatDAO seatDAO = new SeatDAO();
-    
-    Show show = showDAO.getShowById(showId);
-    Movie movie = movieDAO.getMovieById(show.getMovieId()); // Get the movie object
-    List<Seat> seats = seatDAO.getSeatsByShowId(showId);
-%>
+ 
     <div class="seat-selection-container">
         <div class="screen-container">
             <div class="screen"></div>
@@ -60,11 +71,18 @@
                             }
                         }
                 %>
-                <div class="seat <%= isBooked ? "booked" : "" %>" 
-                     data-seat="<%= seatNumber %>"
-                     onclick="selectSeat(this)">
-                    <%= seatNumber %>
-                </div>
+               <div class="seat <%= isBooked ? "booked" : "" %>" 
+     data-seat="<%= seatNumber %>"
+     <% for(Seat seat : seats) {
+         if(seat.getSeatNumber().equals(seatNumber)) { %>
+             data-seat-id="<%= seat.getSeatId() %>"
+         <% break;
+         }
+     } %>
+     onclick="selectSeat(this)">
+    <%= seatNumber %>
+</div>
+
                 <% } %>
             </div>
             <% } %>
@@ -110,35 +128,58 @@
 </div>
 
         <div class="booking-summary">
-            <h3>Selected Seats: <span id="selectedSeatsText">None</span></h3>
-            <h3>Total Amount: Rs. <span id="totalAmount">0</span></h3>
-            <button id="proceedButton" class="proceed-button" disabled 
-                    onclick="proceedToBooking()">
-                Proceed to Payment
-            </button>
+           <p>Form Data Debugging:</p>
+    <p>Show ID: <%= showId %></p>
+    <p>Selected Seats: <span id="selectedSeatsText">></span></p>
+    <p>Selected Seat IDs: <span id="selectedSeatsIds"></span></p>
+    <p>User Email: <%= userEmail %></p>
+    <p>Movie ID: <%= show.getMovieId()%></p>
+    <h3>Selected Seats: <span id="selectedSeatsText">None</span></h3>
+    <h3>Total Amount: Rs. <span id="totalAmount">0</span></h3>
+          
+         <form id="bookingForm" action="PaymentServlet" method="post">
+    <button id="proceedButton" class="proceed-button" disabled 
+            type="button" onclick="proceedToBooking()">
+        Proceed to Payment
+    </button>
+    <input type="hidden" name="showId" value="<%= showId %>">
+    <input type="hidden" name="seats" id="selected_seats">
+    <input type="hidden" name="seatIds" id="selected_seat_ids">
+    <input type="hidden" name="adults" id="hidden_adult_count">
+    <input type="hidden" name="children" id="hidden_child_count">
+    <input type="hidden" name="totalAmount" id="hidden_total_amount">
+</form>
+
+
         </div>
     </div>
     </div>
     <script>
         let selectedSeats = [];
+        let selectedSeatIds = [];
 const adultPrice = <%= movie.getAdultTicketPrice() %>;
 const childPrice = <%= movie.getChildTicketPrice() %>;
 let adultCount = 0;
 let childCount = 0;
 
+
 function selectSeat(seatElement) {
     if(seatElement.classList.contains('booked')) return;
     
     const seatNumber = seatElement.dataset.seat;
+    const seatId = seatElement.dataset.seatId;
     
     if(seatElement.classList.contains('selected')) {
         seatElement.classList.remove('selected');
         selectedSeats = selectedSeats.filter(seat => seat !== seatNumber);
+        selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
     } else {
         seatElement.classList.add('selected');
         selectedSeats.push(seatNumber);
+        selectedSeatIds.push(seatId);
     }
-
+ document.getElementById('selected_seats').value = selectedSeats.join(',');
+    document.getElementById('selected_seat_ids').value = selectedSeatIds.join(',');
     updateTicketTypeSection();
  
     updateBookingSummary();
@@ -212,45 +253,57 @@ function validateTicketCounts() {
 
 function updateBookingSummary() {
     const selectedSeatsText = document.getElementById('selectedSeatsText');
+    const selectedSeatsIdsText = document.getElementById('selectedSeatsIds');
     const totalAmountText = document.getElementById('totalAmount');
     
     if(selectedSeats.length > 0) {
+        // Update visible text
         selectedSeatsText.textContent = selectedSeats.join(', ');
+        selectedSeatsIdsText.textContent = selectedSeatIds.join(', ');
         const totalAmount = (adultCount * adultPrice) + (childCount * childPrice);
         totalAmountText.textContent = totalAmount.toFixed(2);
+        
+        // Update hidden form fields
+        document.getElementById('selected_seats').value = selectedSeats.join(',');
+        document.getElementById('selected_seat_ids').value = selectedSeatIds.join(',');
+        document.getElementById('hidden_adult_count').value = adultCount;
+        document.getElementById('hidden_child_count').value = childCount;
+        document.getElementById('hidden_total_amount').value = totalAmount.toFixed(2);
+        
+        // Debug information
+        console.log('Selected Seat Numbers:', selectedSeats);
+        console.log('Selected Seat IDs:', selectedSeatIds);
     } else {
         selectedSeatsText.textContent = 'None';
+        selectedSeatsIdsText.textContent = 'None';
         totalAmountText.textContent = '0';
+        
+        // Clear hidden form fields
+        document.getElementById('selected_seats').value = '';
+        document.getElementById('selected_seat_ids').value = '';
+        document.getElementById('hidden_adult_count').value = '0';
+        document.getElementById('hidden_child_count').value = '0';
+        document.getElementById('hidden_total_amount').value = '0';
     }
 }
+
+
 
 function proceedToBooking() {
     if(selectedSeats.length > 0 && (adultCount + childCount) === selectedSeats.length) {
-        // Create a form and submit it
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = 'PaymentServlet';
+        // Set all form values
+        document.getElementById('selected_seats').value = selectedSeats.join(',');
+        document.getElementById('selected_seat_ids').value = selectedSeatIds.join(',');
+        document.getElementById('hidden_adult_count').value = adultCount;
+        document.getElementById('hidden_child_count').value = childCount;
+        document.getElementById('hidden_total_amount').value = 
+            ((adultCount * adultPrice) + (childCount * childPrice)).toFixed(2);
 
-        // Add hidden fields
-        const addHiddenField = (name, value) => {
-            const field = document.createElement('input');
-            field.type = 'hidden';
-            field.name = name;
-            field.value = value;
-            form.appendChild(field);
-        };
-
-        addHiddenField('showId', '<%= showId %>');
-        addHiddenField('seats', selectedSeats.join(','));
-        addHiddenField('adults', adultCount);
-        addHiddenField('children', childCount);
-        addHiddenField('totalAmount', document.getElementById('totalAmount').textContent);
-
-        // Append form to body and submit
-        document.body.appendChild(form);
-        form.submit();
+        // Submit the form
+        document.getElementById('bookingForm').submit();
     }
 }
+
 
     </script>
 </body>
