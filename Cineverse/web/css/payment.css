@@ -131,10 +131,96 @@
         #paypal-button-container {
             margin-top: 2rem;
         }
+.payment-actions {
+            margin-top: 20px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
 
+        .confirm-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #cccccc; /* Initially gray */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: not-allowed;
+        }
+
+        .confirm-button.active {
+            background-color: #1F3368;
+            cursor: pointer;
+        }
+
+        .paypal-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+        }
+
+        .usd-amount {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c2e2f;
+        }
         @media (max-width: 768px) {
             .payment-container {
                 grid-template-columns: 1fr;
             }
         }
 
+.amount-display {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.lkr-amount {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1F3368;
+    margin-bottom: 5px;
+}
+
+.usd-amount {
+    font-size: 1rem;
+    color: #666;
+}
+
+.confirm-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #cccccc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+.confirm-button.active {
+    background-color: #1F3368;
+    cursor: pointer;
+}
+
+.confirm-button.active:hover {
+    background-color: #152449;
+}
+
+#paypal-button-container {
+    min-height: 150px;
+    margin: 20px 0;
+}
+
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
