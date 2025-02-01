@@ -226,8 +226,29 @@ function updateBookingSummary() {
 
 function proceedToBooking() {
     if(selectedSeats.length > 0 && (adultCount + childCount) === selectedSeats.length) {
-        const queryString = `showId=<%= showId %>&seats=${selectedSeats.join(',')}&adults=${adultCount}&children=${childCount}`;
-        window.location.href = `payment.jsp?${queryString}`;
+        // Create a form and submit it
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = 'PaymentServlet';
+
+        // Add hidden fields
+        const addHiddenField = (name, value) => {
+            const field = document.createElement('input');
+            field.type = 'hidden';
+            field.name = name;
+            field.value = value;
+            form.appendChild(field);
+        };
+
+        addHiddenField('showId', '<%= showId %>');
+        addHiddenField('seats', selectedSeats.join(','));
+        addHiddenField('adults', adultCount);
+        addHiddenField('children', childCount);
+        addHiddenField('totalAmount', document.getElementById('totalAmount').textContent);
+
+        // Append form to body and submit
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 
