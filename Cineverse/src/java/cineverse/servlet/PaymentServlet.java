@@ -14,24 +14,25 @@ public class PaymentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        
         try {
-            // Get parameters
+         
             int showId = Integer.parseInt(request.getParameter("showId"));
             String[] selectedSeats = request.getParameter("seats").split(",");
+            String[] seatIds = request.getParameter("seatIds").split(",");
             int adultCount = Integer.parseInt(request.getParameter("adults"));
             int childCount = Integer.parseInt(request.getParameter("children"));
             double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
             
-            // Store booking details in session
+           
+            HttpSession session = request.getSession();
             session.setAttribute("bookingShowId", showId);
             session.setAttribute("bookingSeats", selectedSeats);
+            session.setAttribute("bookingSeatsIds", seatIds);
             session.setAttribute("bookingAdultCount", adultCount);
             session.setAttribute("bookingChildCount", childCount);
             session.setAttribute("bookingTotalAmount", totalAmount);
             
-            // Redirect to payment page
+           
             response.sendRedirect("payment.jsp");
             
         } catch (NumberFormatException e) {
