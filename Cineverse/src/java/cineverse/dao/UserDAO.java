@@ -75,7 +75,7 @@ public class UserDAO {
     // Get all users with role = "user"
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users WHERE role = 'user' ORDER BY created_at DESC";
+        String query = "SELECT * FROM users WHERE role = 'user' ORDER BY created_at ASC";
         
         try {
             PreparedStatement pst = connection.prepareStatement(query);
