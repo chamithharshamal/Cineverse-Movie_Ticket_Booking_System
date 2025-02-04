@@ -24,10 +24,9 @@
                     <li><a href="../index.jsp">Website</a></li>
                     <li><a href="addMovie.jsp">Movies</a></li>
                     <li><a href="addShow.jsp">Shows</a></li>
-                    <li><a href="manageUser.jsp">User</a></li>
-                    <li><a href="#">Payment</a></li>
+                    <li><a href="users.jsp">User</a></li>
                     <li><a href="#">Feedback</a></li>
-                    <li><a href="#">Report</a></li>
+                    <li><a href="report.jsp">Report</a></li>
                 </ul>
             </nav>
             <form action="${pageContext.request.contextPath}/logout" method="get" class="logout-form">
