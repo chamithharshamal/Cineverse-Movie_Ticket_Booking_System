@@ -128,26 +128,22 @@
 </div>
 
         <div class="booking-summary">
-           <p>Form Data Debugging:</p>
-    <p>Show ID: <%= showId %></p>
-    <p>Selected Seats: <span id="selectedSeatsText">></span></p>
-    <p>Selected Seat IDs: <span id="selectedSeatsIds"></span></p>
-    <p>User Email: <%= userEmail %></p>
-    <p>Movie ID: <%= show.getMovieId()%></p>
-    <h3>Selected Seats: <span id="selectedSeatsText">None</span></h3>
-    <h3>Total Amount: Rs. <span id="totalAmount">0</span></h3>
+            <p style="color:#2d3241; margin-top: -20px;">Selected Seat IDs: <span id="selectedSeatsIds"></span></p>
+            <h3>Selected Seats: <span id="selectedSeatsText">None</span></h3>
+            <h3>Total Amount: Rs. <span id="totalAmount">0</span></h3>
           
          <form id="bookingForm" action="PaymentServlet" method="post">
-    <button id="proceedButton" class="proceed-button" disabled 
-            type="button" onclick="proceedToBooking()">
-        Proceed to Payment
-    </button>
-    <input type="hidden" name="showId" value="<%= showId %>">
+              <input type="hidden" name="showId" value="<%= showId %>">
     <input type="hidden" name="seats" id="selected_seats">
     <input type="hidden" name="seatIds" id="selected_seat_ids">
     <input type="hidden" name="adults" id="hidden_adult_count">
     <input type="hidden" name="children" id="hidden_child_count">
     <input type="hidden" name="totalAmount" id="hidden_total_amount">
+    
+    <button id="proceedButton" class="proceed-button" disabled 
+            type="button" onclick="proceedToBooking()">
+        Proceed to Payment
+    </button>
 </form>
 
 
