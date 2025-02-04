@@ -256,7 +256,7 @@ label {
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
-    margin-top: auto;
+    margin-top: 50px;
 }
 
 .logout-btn:hover {
