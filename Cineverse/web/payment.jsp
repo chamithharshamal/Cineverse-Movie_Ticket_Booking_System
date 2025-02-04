@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment - Cineverse</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://www.paypal.com/sdk/js?client-id="></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=_your_paypal_sdk_id_"></script>
     <link href="css/payment.css" rel="stylesheet">
          
 <%
@@ -29,6 +29,9 @@
     MovieDAO movieDAO = new MovieDAO();
     Show show = showDAO.getShowById(showId);
     Movie movie = movieDAO.getMovieById(show.getMovieId());
+    
+     session.setAttribute("bookingMovieId", movie.getMovieId());
+    session.setAttribute("bookingHallName", show.getHallName());
 
     if (showId == null || selectedSeats == null || adultCount == null || 
         childCount == null || totalAmount == null) {
@@ -100,7 +103,7 @@
         </div>
     </div>
     <div class="payment-actions">
-        <form action="confirmation.jsp" method="post">
+        <form action="BookingServlet" method="post">
         <button type="submit" id="confirmBooking" class="confirm-button">
             Confirm Booking
         </button>
