@@ -17,15 +17,27 @@ label {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="date"],
-select {
+select,
+select option {
     width: 100%;
     padding: 0.75rem;
     margin-bottom: 1rem;
     border: 1px solid var(--primary-color);
-    background: var(--bg-dark);
+    background: #2d3241;
     color: var(--text-light);
     border-radius: 5px;
+}
+
+select option {
+    background-color: #2d3241; 
+}
+
+select option:checked,
+select option:hover {
+    background: var(--primary-color) ;
+    color: var(--text-light) ;
 }
 
 .timeslot {
@@ -51,8 +63,8 @@ button {
 }
 
 button[type="submit"] {
-    background-color: var(--primary-color);
-    color: var(--bg-dark);
+    background-color: #1c2231;
+    color: #facc15;
     margin-right: 1rem;
 }
 
