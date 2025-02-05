@@ -19,12 +19,6 @@
         return;
     }
 
-    String message = (String) session.getAttribute("message");
-    String messageType = (String) session.getAttribute("messageType");
-    if (message != null) {
-        session.removeAttribute("message");
-        session.removeAttribute("messageType");
-    }
 %>
 
 <!DOCTYPE html>
@@ -36,7 +30,17 @@
         <link href="../css/sidePanel.css" rel="stylesheet">
     </head>
     <body>
-        <div id="message" class="message <%= messageType != null ? messageType : ""%>"></div>
+        <%            String message = (String) session.getAttribute("message");
+            String messageType = (String) session.getAttribute("messageType");
+           
+            session.removeAttribute("message");
+            session.removeAttribute("messageType");
+        %>
+
+        <div id="message" class="message <%= messageType != null ? messageType : ""%>" 
+             style="display: <%= message != null ? "block" : "none"%>">
+            <%= message != null ? message : ""%>
+        </div>
 
         <div class="container">
             <div class="left">
@@ -233,16 +237,17 @@
             <p>&copy; 2025 Cineverse. All Rights Reserved.</p>
         </footer>
         <script>
-            function showMessage(text) {
+            function showMessage(text, type = 'success') {
             const messageDiv = document.getElementById('message');
             messageDiv.textContent = text;
-            messageDiv.classList.add('show'); // Add a class for styling
+            messageDiv.className = 'message ' + type;
             messageDiv.style.display = 'block';
-            setTimeout(() = > {  // Correct arrow function syntax
+            setTimeout(function() {
             messageDiv.style.display = 'none';
-            messageDiv.classList.remove('show');
+            messageDiv.className = 'message';
             }, 4000);
             }
+
 
 
             function preventDoubleSubmission(form) {
