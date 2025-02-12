@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+
     private Connection connection;
 
     public UserDAO() {
@@ -15,23 +16,22 @@ public class UserDAO {
 
     // Register new user
     public boolean registerUser(User user) {
-    String query = "INSERT INTO users (name, email, password, phone_number, role) VALUES (?, ?, ?, ?, ?)";
-    try {
-        PreparedStatement pst = connection.prepareStatement(query);
-        pst.setString(1, user.getName());
-        pst.setString(2, user.getEmail());
-        pst.setString(3, user.getPassword());
-        pst.setString(4, user.getPhoneNumber());
-        pst.setString(5, user.getRole());
-        
-        int result = pst.executeUpdate();
-        return result > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
-    }
-}
+        String query = "INSERT INTO users (name, email, password, phone_number, role) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setString(1, user.getName());
+            pst.setString(2, user.getEmail());
+            pst.setString(3, user.getPassword());
+            pst.setString(4, user.getPhoneNumber());
+            pst.setString(5, user.getRole());
 
+            int result = pst.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // Login user
     public User loginUser(String email, String password) {
@@ -40,9 +40,9 @@ public class UserDAO {
             PreparedStatement pst = connection.prepareStatement(query);
             pst.setString(1, email);
             pst.setString(2, password);
-            
+
             ResultSet rs = pst.executeQuery();
-            
+
             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
@@ -76,11 +76,11 @@ public class UserDAO {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users WHERE role = 'user' ORDER BY created_at ASC";
-        
+
         try {
             PreparedStatement pst = connection.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
-            
+
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
@@ -118,7 +118,7 @@ public class UserDAO {
             PreparedStatement pst = connection.prepareStatement(query);
             pst.setInt(1, userId);
             ResultSet rs = pst.executeQuery();
-            
+
             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
@@ -136,26 +136,26 @@ public class UserDAO {
 
     // Get user by Email
     public User getUserByEmail(String email) {
-    String query = "SELECT * FROM users WHERE email = ?";
-    try {
-        PreparedStatement pst = connection.prepareStatement(query);
-        pst.setString(1, email);
-        ResultSet rs = pst.executeQuery();
-        
-        if (rs.next()) {
-            User user = new User();
-            user.setId(rs.getInt("id"));
-            user.setName(rs.getString("name"));
-            user.setEmail(rs.getString("email"));
-            user.setPhoneNumber(rs.getString("phone_number"));
-            user.setRole(rs.getString("role"));
-            return user;
+        String query = "SELECT * FROM users WHERE email = ?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setPhoneNumber(rs.getString("phone_number"));
+                user.setRole(rs.getString("role"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 
     // Delete user
     public boolean deleteUser(int userId) {
@@ -180,7 +180,7 @@ public class UserDAO {
             pst.setString(2, user.getEmail());
             pst.setString(3, user.getPhoneNumber());
             pst.setInt(4, user.getId());
-            
+
             int rowsAffected = pst.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -188,4 +188,33 @@ public class UserDAO {
             return false;
         }
     }
+
+    public boolean updatePassword(int userId, String currentPassword, String newPassword) {
+        String verifyQuery = "SELECT * FROM users WHERE id = ? AND password = ?";
+        String updateQuery = "UPDATE users SET password = ? WHERE id = ?";
+
+        try {
+            // First verify current password
+            PreparedStatement verifyPst = connection.prepareStatement(verifyQuery);
+            verifyPst.setInt(1, userId);
+            verifyPst.setString(2, currentPassword);
+            ResultSet rs = verifyPst.executeQuery();
+
+            if (rs.next()) {
+                
+                PreparedStatement updatePst = connection.prepareStatement(updateQuery);
+                updatePst.setString(1, newPassword);
+                updatePst.setInt(2, userId);
+
+                int rowsAffected = updatePst.executeUpdate();
+                return rowsAffected > 0;
+            }
+            return false; // Current password didn't match
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
