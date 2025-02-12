@@ -1,0 +1,76 @@
+ :root {
+                --primary-color: #facc15;
+                --bg-dark: #1c2231;
+                --text-light: #d1d5db;
+                --card-bg: #2d3241;
+            }
+
+            body {
+                background-color: var(--bg-dark);
+                color: var(--text-light);
+            }
+
+            .booking-card {
+                background-color: var(--card-bg);
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                padding: 15px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                transition: transform 0.2s;
+            }
+
+            .booking-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+
+            .booking-header {
+                border-bottom: 1px solid #eee;
+                margin-bottom: 10px;
+                padding-bottom: 10px;
+            }
+
+            .booking-details {
+                font-size: 0.9rem;
+            }
+
+            .status-badge {
+                font-size: 0.8rem;
+                padding: 5px 10px;
+                border-radius: 15px;
+                color: #fff;
+            }
+
+            .future-booking .status-badge {
+                background-color: var(--primary-color);
+            }
+
+            .past-booking .status-badge {
+                background-color: #6c757d;
+            }
+
+            .future-booking {
+                border-left: 4px solid var(--primary-color);
+            }
+
+            .past-booking {
+                border-left: 4px solid #6c757d;
+                opacity: 0.8;
+            }
+
+            .section-title {
+                margin: 30px 0 20px 0;
+                padding-bottom: 10px;
+                border-bottom: 2px solid var(--primary-color);
+            }
+
+            .no-bookings {
+                text-align: center;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                margin: 20px 0;
+                color: var(--bg-dark);
+                background-color: var(--text-light);
+            }
