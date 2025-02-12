@@ -69,7 +69,7 @@
                         <div class="menu-icon" onclick="toggleDropdown(event)">☰</div>
                         <div class="dropdown-content" id="dropdownContent">
                             <a href="index.jsp"><i class="fas fa-home"></i> Home</a>
-                            <a href="bookings.jsp"><i class="fas fa-ticket-alt"></i> My Bookings</a>
+                            <a href="mybookings.jsp"><i class="fas fa-ticket-alt"></i> My Bookings</a>
                             <a href="profile.jsp"><i class="fas fa-user"></i> Profile</a>
                             <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
                             <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
