@@ -1,16 +1,16 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --primary-color: #facc15;
+    --bg-dark: #1c2231;
+    --text-light: #d1d5db;
+    --card-bg: #2d3241;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(to bottom, #10141e, #2d3241);
-    color: white;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 /* Header styling */
@@ -222,82 +222,113 @@ header .menu-icon:hover {
     background-color: #facc15;
     color: black;
 }
-/* Section Titles */
-.section-title {
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 2rem 1.5rem;
-    text-transform: uppercase;
-    color: #facc15;
+/* Movie Sections */
+section {
+    padding: 1rem 2rem;
 }
 
-/* Movie Section */
+.section-title {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-left: 1rem;
+    border-left: 4px solid var(--primary-color);
+}
+
 .movie-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    padding: 0 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(277px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
 }
 
 .movie-card {
-    background: #1c2231;
-    border-radius: 0.5rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    max-width: 370px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-    max-width: 340px; 
-    margin: 0 auto;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(250, 204, 21, 0.1);
 }
 
-.movie-card img {
+.movie-card:hover {
+    transform: translateY(-5px);
+}
+
+.movie-poster {
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-poster img {
     width: 100%;
-    height: 280px; 
+    height: 280px;
     object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.movie-card .info {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
-    text-align: center;   
-    gap: 0.5rem;         
-}
-.movie-card .button-group {
-    display: flex;
-    gap: 10px;
-    padding: 0 1rem 1rem 1rem;
+.movie-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, var(--card-bg));
+    padding: 2rem 1rem 1rem;
 }
 
-.movie-card button {
-    flex: 1;
-    padding: 0.6rem;
+.movie-info {
+    padding: 1.5rem;
+}
+
+.movie-title {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.movie-meta {
     font-size: 0.9rem;
-    border-radius: 0.4rem;
-    cursor: pointer;
-    transition: all 0.3s;
+    margin-bottom: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
+.btn-book, .trailer-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 25px;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
 }
 
-.book-btn {
-    background: #facc15;
-    color: black;
+.btn-book {
+    background: var(--primary-color);
+    color: var(--bg-dark);
     border: none;
-}
-
-.book-btn:hover {
-    background: #d4af37;
 }
 
 .trailer-btn {
     background: transparent;
-    color: #facc15;
-    border: 2px solid #facc15;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-book:hover {
+    background: #e3b912;
 }
 
 .trailer-btn:hover {
     background: rgba(250, 204, 21, 0.1);
 }
+
 /* Trailer Modal Styles */
 .trailer-modal {
     display: none;
@@ -382,44 +413,30 @@ footer a:hover {
     text-decoration: underline;
 }
 
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
 
-.user-info span {
-    color: #fff;
-    font-size: 14px;
-}
+    .search-bar {
+        width: 200px;
+    }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
+    .banner {
+        height: 50vh;
+    }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    border-radius: 4px;
-}
+    .movie-container {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
 
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
+    .modal-content {
+        width: 95%;
+    }
 
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
+    .close-modal {
+        right: 0;
+        top: -40px;
+    }
 }
