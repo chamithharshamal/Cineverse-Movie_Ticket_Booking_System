@@ -16,6 +16,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Movie Ticket Booking</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <link href="css/index.css" rel="stylesheet">
 
     </head>
@@ -108,41 +110,59 @@
                 <button onclick="nextSlide()">❯</button>
             </div>
         </div>
-
-
+            <br>
+        <!-- Now Showing Section -->
         <section class="now-showing">
             <h2 class="section-title">Now Showing</h2>
             <div class="movie-container">
                 <% for (Movie movie : nowShowingMovies) {%>
                 <div class="movie-card">
-                    <img src="<%= movie.getImagePath()%>" alt="<%= movie.getMovieName()%>">
-                    <div class="info">
-                        <h3><%= movie.getMovieName()%></h3>
-                        <p><%= movie.getLanguage()%></p>
+                    <div class="movie-poster">
+                        <img src="<%= movie.getImagePath()%>" alt="<%= movie.getMovieName()%>">
+                        <div class="movie-overlay">
+                            <span class="rating-badge">
+                                <i class="fas fa-star"></i> 4.5
+                            </span>
+                        </div>
                     </div>
-                    <div class="button-group">
-                        <button class="book-btn" onclick="location.href = 'booking.jsp?movieId=<%= movie.getMovieId()%>'">Book Now</button>
-                        <button class="trailer-btn" onclick="playTrailer('<%= movie.getTrailerLink()%>')">Watch Trailer</button>
+                    <div class="movie-info">
+                        <h3 class="movie-title"><%= movie.getMovieName()%></h3>
+                        <div class="movie-meta">
+                            <span><i class="fas fa-globe"></i> <%= movie.getLanguage()%></span>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-book" onclick="location.href = 'booking.jsp?movieId=<%= movie.getMovieId()%>'">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('<%= movie.getTrailerLink()%>')">Watch Trailer</button>
+                        </div>
                     </div>
                 </div>
                 <% } %>
             </div>
         </section>
 
-
+        <!-- Coming Soon Section -->
         <section class="coming-soon">
             <h2 class="section-title">Coming Soon</h2>
             <div class="movie-container">
                 <% for (Movie movie : comingSoonMovies) {%>
                 <div class="movie-card">
-                    <img src="<%= movie.getImagePath()%>" alt="<%= movie.getMovieName()%>">
-                    <div class="info">
-                        <h3><%= movie.getMovieName()%></h3>
-                        <p><%= movie.getLanguage()%></p>
+                    <div class="movie-poster">
+                        <img src="<%= movie.getImagePath()%>" alt="<%= movie.getMovieName()%>">
+                        <div class="movie-overlay">
+                            <span class="rating-badge">
+                                <i class="fas fa-star"></i> 4.5
+                            </span>
+                        </div>
                     </div>
-                    <div class="button-group">
-                        <button class="book-btn">Notify Me</button>
-                        <button class="trailer-btn" onclick="playTrailer('<%= movie.getTrailerLink()%>')">Watch Trailer</button>
+                    <div class="movie-info">
+                        <h3 class="movie-title"><%= movie.getMovieName()%></h3>
+                        <div class="movie-meta">
+                            <span><i class="fas fa-globe"></i> <%= movie.getLanguage()%></span>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-book notify-btn">Notify Me</button>
+                            <button class="trailer-btn" onclick="playTrailer('<%= movie.getTrailerLink()%>')">Watch Trailer</button>
+                        </div>
                     </div>
                 </div>
                 <% }%>
@@ -228,8 +248,6 @@
             }
 
         </script>
-
-
     </body>
 </html>
 
