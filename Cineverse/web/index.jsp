@@ -62,7 +62,7 @@
     <body>
         <header>
             <div class="logo">Cineverse</div>
-            <input type="text" placeholder="Search for movies...">
+            
             <div class="right-section">
                 <% if (isLoggedIn) {%>
                 <div class="user-info">
@@ -73,7 +73,6 @@
                             <a href="index.jsp"><i class="fas fa-home"></i> Home</a>
                             <a href="mybookings.jsp"><i class="fas fa-ticket-alt"></i> My Bookings</a>
                             <a href="profile.jsp"><i class="fas fa-user"></i> Profile</a>
-                            <a href="settings.jsp"><i class="fas fa-cog"></i> Settings</a>
                             <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
                     </div>
