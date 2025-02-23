@@ -71,20 +71,19 @@ Cineverse is a modern, user-friendly movie ticket booking system that allows use
    cd cineverse
 
 2. Database Setup
-
-  ```bash
-  mysql -u root -p
-  source db.sql
-  Configure Database Connection
+   ```bash
+    mysql -u root -p
+    source db.sql
+    Configure Database Connection
 
 3. Update
-
-src/main/java/cineverse/connection/DbConnection.java
-with your database credentials
+    ```bash
+    src/main/java/cineverse/connection/DbConnection.java
+    with your database credentials
 
 4. Access the Application
-
-http://localhost:8080/cineverse
+    ```bash
+    http://localhost:8080/cineverse
  
 📊 Database Schema
 
