@@ -1,13 +1,14 @@
  :root {
-            --primary-color: #1F3368;
-            --secondary-color: #F5C518;
-            --background-color: #f5f5f7;
-            --card-background: #ffffff;
-            --text-primary: #333333;
-            --text-secondary: #666666;
-            --border-radius: 12px;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    --primary-color: #facc15;      /* Yellow color */
+    --secondary-color: #d1d5db;    /* Light gray, complementing the dark theme */
+    --background-color: #1c2231;   /* Dark blue background */
+    --card-background: #2d3241;    /* Slightly lighter dark blue for cards */
+    --text-primary: #d1d5db;       /* Light text for dark background */
+    --text-secondary: #9ca3af;     /* Slightly darker text for secondary content */
+    --border-radius: 12px;         /* Keeping the same border radius */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Darker shadow for dark theme */
+}
+
 
         * {
             margin: 0;
@@ -30,6 +31,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
             padding: 2rem;
+            color: black;
         }
 
         .booking-summary {
