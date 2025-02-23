@@ -121,18 +121,18 @@ Administrator
 - This project is licensed under the MIT License - see the LICENSE file for details
 
 👨‍💻 Authors
-Chamith Weerasingha - Initial work - https://github.com/chamithharshamal
+- Chamith Weerasingha - Initial work - https://github.com/chamithharshamal
 
 🙏 Acknowledgments
-Bootstrap Team for the amazing UI components
-Font Awesome for the icons
-All contributors who helped with the project
+- Bootstrap Team for the amazing UI components
+- Font Awesome for the icons
+- All contributors who helped with the project
 
 📞 Contact
-Project Link: https://github.com/chamithharshamal/Cineverse-Movie_Ticket_Booking_System
-Your Email: chamithweerasinghe1@gmail.com
+- Project Link: https://github.com/chamithharshamal/Cineverse-Movie_Ticket_Booking_System
+- Email: chamithweerasinghe1@gmail.com
 
 🔄 Project Status
-Project is: in progress
+- Project is: in progress
 
 © 2024 Cineverse. All Rights Reserved.
