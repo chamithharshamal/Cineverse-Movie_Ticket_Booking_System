@@ -117,8 +117,8 @@ Administrator
 - Push to the branch (git push origin feature/AmazingFeature)
 - Open a Pull Request
 
-📜 License
-This project is licensed under the MIT License - see the LICENSE file for details
+📜 License 
+- This project is licensed under the MIT License - see the LICENSE file for details
 
 👨‍💻 Authors
 Chamith Weerasingha - Initial work - https://github.com/chamithharshamal
