@@ -41,7 +41,7 @@ Cineverse is a modern, user-friendly movie ticket booking system that allows use
 *Interactive seat selection interface*
 
 ### Booking Confirmation
-![Booking](screenshots/booking.png![Booking-1](https://github.com/user-attachments/assets/438fce53-18e4-4a2a-bfc3-38a6157a374e)
+![Booking](https://github.com/user-attachments/assets/438fce53-18e4-4a2a-bfc3-38a6157a374e)
 
 *Booking summary and payment interface*
 
@@ -72,10 +72,10 @@ Cineverse is a modern, user-friendly movie ticket booking system that allows use
 
 2. Database Setup
 
-``bash
-mysql -u root -p
-source db.sql
-Configure Database Connection
+  ```bash
+  mysql -u root -p
+  source db.sql
+  Configure Database Connection
 
 3. Update
 
@@ -93,30 +93,30 @@ http://localhost:8080/cineverse
 👥 User Roles
 
 Customer
--Register/Login
--Browse movies
--Book tickets
--Manage profile
--View booking history
+- Register/Login
+- Browse movies
+- Book tickets
+- Manage profile
+- View booking history
 
 Administrator
--Manage movies
--Manage shows
--View bookings
--Generate reports
--Manage users
+- Manage movies
+- Manage shows
+- View bookings
+- Generate reports
+- Manage users
 
 🔒 Security Features
--Session management
--SQL injection prevention
--Form validation
+- Session management
+- SQL injection prevention
+- Form validation
 
 🤝 Contributing
--Fork the repository
--Create your feature branch (git checkout -b feature/AmazingFeature)
--Commit your changes (git commit -m 'Add some AmazingFeature')
--Push to the branch (git push origin feature/AmazingFeature)
--Open a Pull Request
+- Fork the repository
+- Create your feature branch (git checkout -b feature/AmazingFeature)
+- Commit your changes (git commit -m 'Add some AmazingFeature')
+- Push to the branch (git push origin feature/AmazingFeature)
+- Open a Pull Request
 
 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details
